@@ -127,36 +127,38 @@ function ProductContent() {
         {/* Main Content */}
         <div className="w-full md:w-3/4">
           <h2 className="text-2xl font-semibold mb-4">{selectedCategory.name}</h2>
-          <div className="grid grid-cols-1 gap-6">
-            <div className="rounded-lg overflow-hidden">
-              <Image 
-                src={selectedCategory.image} 
-                alt={selectedCategory.name} 
-                width={800} 
-                height={400} 
-                className="w-full h-64 object-cover"
-              />
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table w-full">
-                <thead>
-                  <tr>
-                    <th>Product Name</th>
-                    <th>CAS Number</th>
-                    <th>Applications</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedCategory.products.map((product, productIndex) => (
-                    <tr key={productIndex}>
-                      <td>{product.name}</td>
-                      <td>{product.cas}</td>
-                      <td>{product.applications}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {selectedCategory.products.map((product, productIndex) => (
+              <div key={productIndex} className="h-[20rem] w-full border rounded-[6px]">
+                <a href={`/product/${product.name}`}>
+                  <img
+                    src={selectedCategory.image}
+                    alt={selectedCategory.name}
+                    className="h-[48%] w-full object-cover"
+                  />
+                </a>
+                <div className="h-[52%] w-full flex flex-col justify-around px-3">
+                  <a href={`/product/${product.name}`}>
+                    <div>
+                      <p className="text-[0.9rem] font-medium mb-2 uppercase">
+                        {product.name}
+                      </p>
+                      <p className="text-[#777777] text-[0.85rem] hideLongTypography2">
+                        {product.applications}
+                      </p>
+                    </div>
+                  </a>
+                  <div className="flex justify-between">
+                    <button className="font-medium text-[0.72rem] border w-[48%] rounded-[2px] py-2 border-pink text-red hover:border-pink-600 hover:text-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:ring-offset-2 focus:ring-offset-white">
+                      <div>Request A Sample</div>
+                    </button>
+                    <button className="font-medium text-[0.72rem] text-white bg-red w-[48%] rounded-[2px] py-2 bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-white">
+                      <div>Get A Quote</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
