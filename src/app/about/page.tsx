@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
-import { supabase } from '@/lib/utils/supabaseClient';
+// import { supabase } from '@/lib/utils/supabaseClient';
 
 const coreValues = [
   {
@@ -51,31 +51,31 @@ const teamMembers = [
 ];
 
 const AboutPage: React.FC = () => {
-  const [testData, setTestData] = useState<any[]>([]); // State to store test data from Supabase
+  // const [testData, setTestData] = useState<any[]>([]); // State to store test data from Supabase
 
-  useEffect(() => {
-    // Fetch data from a Supabase table when the component mounts
-    const fetchTestData = async () => {
-      try {
-        const { data, error } = await supabase.from('test_table').select('*'); // Replace 'test_table' with your actual table name
+  // useEffect(() => {
+  //   // Fetch data from a Supabase table when the component mounts
+  //   const fetchTestData = async () => {
+  //     try {
+  //       const { data, error } = await supabase.from('test_table').select('*'); // Replace 'test_table' with your actual table name
 
-        if (error) {
-          console.error('Error fetching test data:', error);
-        } else {
-          setTestData(data);
-        }
-      } catch (err) {
-        console.error('Error fetching test data:', err);
-      }
-    };
+  //       if (error) {
+  //         console.error('Error fetching test data:', error);
+  //       } else {
+  //         setTestData(data);
+  //       }
+  //     } catch (err) {
+  //       console.error('Error fetching test data:', err);
+  //     }
+  //   };
 
-    fetchTestData();
-  }, []);
+  //  fetchTestData();
+  // }, []);
   return (
     <div className="container mx-auto px-4 py-12">
       <section className="mb-16">
         <h2 className="text-3xl font-semibold mb-6 text-center">Test Data from Supabase</h2>
-        {testData.length > 0 ? (
+        {/* {testData.length > 0 ? (
           <ul>
             {testData.map((item, index) => (
               <li key={index}>{JSON.stringify(item)}</li>
@@ -83,7 +83,7 @@ const AboutPage: React.FC = () => {
           </ul>
         ) : (
           <p>No test data available.</p>
-        )}
+        )} */}
       </section>
 
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">About KSY Group LLC</h1>
