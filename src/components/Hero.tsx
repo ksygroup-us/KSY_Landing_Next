@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -50,7 +48,7 @@ const Hero: React.FC = () => {
           </div>
         ))}
       </div>
-
+      
       {/* Carousel Navigation */}
       <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
         <button
@@ -79,17 +77,17 @@ const Hero: React.FC = () => {
           <form onSubmit={handleSearch} className="flex justify-center">
             <div className="form-control">
               <div className="input-group">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search for products..."
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for products..."
                   className="input input-bordered w-full max-w-md text-black"
-                />
+            />
                 <button type="submit" className="btn btn-primary">
                   Search
-                </button>
-              </div>
+            </button>
+          </div>
             </div>
           </form>
         </div>
