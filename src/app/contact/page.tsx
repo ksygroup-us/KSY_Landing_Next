@@ -19,16 +19,8 @@ interface IFormInputs {
 }
 
 interface ISDSFormInputs {
-  firstName: string;
-  lastName: string;
   email: string;
-  phone?: string;
-  company?: string;
-  services?: string;
-  country?: string;
-  timezone?: string;
-  preferredDateTime?: string;
-  additionalInfo?: string;
+  product: string;
 }
 
 const productCategories = [
@@ -295,8 +287,18 @@ export default function ContactPage() {
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h3 className="font-bold text-lg mb-2">What documents are required to understand the quality of the product?</h3>
             <p>To ensure our customers have a comprehensive understanding of our product quality, we provide several key documents:</p>
+              <ul className="list-disc list-inside mt-2">
+                <li>Certificate of Analysis (COA): Details the products composition and purity</li>
+                <li>Safety Data Sheet (SDS): Outlines safety precautions, handling procedures, and potential hazards</li>
+                <li>Technical Data Sheet (TDS): Provides specifications and performance characteristics</li>
+              </ul>
+            <p className="mt-2">These documents are available upon request for all our products. For specific documentation needs, please contact our customer service team.</p>
+          </div>
+          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h3 className="font-bold text-lg mb-2">What documents are required to understand the quality of the product?</h3>
+            <p>To ensure our customers have a comprehensive understanding of our product quality, we provide several key documents:</p>
             <ul className="list-disc list-inside mt-2">
-              <li>Certificate of Analysis (COA): Details the products composition and purity</li>
+              <li>Certificate of Analysis (COA): Details the product's composition and purity</li>
               <li>Safety Data Sheet (SDS): Outlines safety precautions, handling procedures, and potential hazards</li>
               <li>Technical Data Sheet (TDS): Provides specifications and performance characteristics</li>
             </ul>
@@ -333,6 +335,7 @@ export default function ContactPage() {
                     type="email"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
+                  {errorsSDS.email && <p className="text-red-500 text-xs italic">Valid email is required</p>}
                 </div>
                 <div className="mb-4">
                   <label htmlFor="sds-product" className="block text-gray-700 text-sm font-bold mb-2">Product</label>
@@ -346,6 +349,7 @@ export default function ContactPage() {
                       <option key={index} value={category}>{category}</option>
                     ))}
                   </select>
+                  {errorsSDS.product && <p className="text-red-500 text-xs italic">Product selection is required</p>}
                 </div>
                 <button 
                   type="submit" 
@@ -358,7 +362,7 @@ export default function ContactPage() {
           </div>
 
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h3 className="font-bold text-lg mb-2">Whats the best way to reach us?</h3>
+            <h3 className="font-bold text-lg mb-2">What's the best way to reach us?</h3>
             <p>We value clear and efficient communication with our customers. The most effective ways to reach us are:</p>
             <ul className="list-disc list-inside mt-2">
               <li>Phone: For immediate assistance, call us at (669) 295-3313 during business hours</li>
