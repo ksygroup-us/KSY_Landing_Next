@@ -2,13 +2,20 @@
 
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { Send, Mail, Phone, Building, Globe, Clock, FileText } from 'lucide-react';
 
 interface IFormInputs {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  product: string;
-  message: string;
+  phone?: string;
+  company?: string;
+  services?: string;
+  country?: string;
+  timezone?: string;
+  preferredDateTime?: string;
+  additionalInfo?: string;
+  terms: boolean;
 }
 
 interface ISDSFormInputs {
@@ -19,25 +26,16 @@ interface ISDSFormInputs {
 const productCategories = [
   "Organic Chemicals",
   "Inorganic Chemicals",
+  "Fine Chemicals",
+  "Specialty Chemicals",
   "Agro Chemicals",
-  "Cosmetic Chemicals",
-  "Construction Chemicals",
-  "Nutraceuticals"
+  "Pharmaceutical Intermediates"
 ];
-
-const mapContainerStyle = {
-  height: "400px",
-  width: "100%"
-};
-
-const center = {
-  lat: 37.7749, // Replace with your latitude
-  lng: -122.4194 // Replace with your longitude
-};
 
 export default function ContactPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
-  const { register: registerSDS, handleSubmit: handleSubmitSDS } = useForm<ISDSFormInputs>();
+  const { register: registerSDS, handleSubmit: handleSubmitSDS, formState: { errors: errorsSDS } } = useForm<ISDSFormInputs>();
+  
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showSDSForm, setShowSDSForm] = useState(false);
@@ -65,92 +63,221 @@ export default function ContactPage() {
   };
 
   const onSubmitSDS: SubmitHandler<ISDSFormInputs> = async (data) => {
-    console.log('SDS form submitted:', data);
-    // You can add the actual submission logic here
+    // Handle SDS request submission
+    console.log('SDS Request Data:', data);
+    // You might want to send this data to your backend or handle it appropriately
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-primary mb-8">Contact Us</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
+    <div className="min-h-screen p-8 bg-gradient-to-b from-gray-100 to-gray-200 flex flex-col">
+      {/* Contact Us Section */}
+      <div className="flex flex-col items-center justify-center flex-grow">
+        <div className="bg-white shadow-2xl rounded-lg p-8 max-w-4xl w-full mb-8">
+          <h1 className="text-4xl font-bold text-center mb-6 text-[#1E5C9B]">Contact Us</h1>
+          <p className="mb-6 text-gray-600 text-center">Please feel free to send KSY Group any questions or comments you may have.</p>
           {isSubmitted ? (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg">
               <h2 className="font-bold text-xl mb-2">Thank you for your message!</h2>
-              <p>We&apos;ve received your inquiry and appreciate you reaching out. Our team will review your message and get back to you as soon as possible, typically within 1-2 business days.</p>
+              <p>We've received your inquiry and appreciate you reaching out. Our team will review your message and get back to you as soon as possible, typically within 1-2 business days.</p>
               <p className="mt-2">Please check your email for a confirmation of your submission.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                <input
-                  {...register('name', { required: 'Name is required' })}
-                  id="name"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                {errors.name && <p className="text-red-500 text-xs italic">{errors.name.message}</p>}
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg px-8 pt-6 pb-8 mb-4 w-full">
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label htmlFor="firstName" className="block text-gray-700 text-sm font-bold mb-2">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    {...register('firstName', { required: 'First name is required' })}
+                    id="firstName"
+                    className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                  />
+                  {errors.firstName && <p className="text-red-500 text-xs italic">{errors.firstName.message}</p>}
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    {...register('lastName', { required: 'Last name is required' })}
+                    id="lastName"
+                    className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                  />
+                  {errors.lastName && <p className="text-red-500 text-xs italic">{errors.lastName.message}</p>}
+                </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                <input
-                  {...register('email', { 
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address"
-                    }
-                  })}
-                  id="email"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      {...register('email', { 
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Invalid email address"
+                        }
+                      })}
+                      id="email"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    />
+                  </div>
+                  {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Phone className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      {...register('phone')}
+                      id="phone"
+                      type="tel"
+                      placeholder="+1 (702) 123-4567"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="product" className="block text-gray-700 text-sm font-bold mb-2">Product Category</label>
-                <select
-                  {...register('product', { required: 'Product category is required' })}
-                  id="product"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
-                  <option value="">Select a product category</option>
-                  {productCategories.map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
-                  ))}
-                </select>
-                {errors.product && <p className="text-red-500 text-xs italic">{errors.product.message}</p>}
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label htmlFor="company" className="block text-gray-700 text-sm font-bold mb-2">
+                    Company/Organization
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Building className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      {...register('company')}
+                      id="company"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    />
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <label htmlFor="services" className="block text-gray-700 text-sm font-bold mb-2">
+                    Services Looking For
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FileText className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      {...register('services')}
+                      id="services"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    >
+                      <option value="">Select Service</option>
+                      <option value="sourcing">Chemical Sourcing</option>
+                      <option value="consulting">Consulting Services</option>
+                      <option value="logistics">Logistics Support</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label htmlFor="country" className="block text-gray-700 text-sm font-bold mb-2">
+                    Country
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Globe className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      {...register('country')}
+                      id="country"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    >
+                      <option value="">Select Country</option>
+                      <option value="US">United States</option>
+                      <option value="IN">India</option>
+                      {/* Add more options here */}
+                    </select>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <label htmlFor="timezone" className="block text-gray-700 text-sm font-bold mb-2">
+                    Timezone
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Clock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      {...register('timezone')}
+                      id="timezone"
+                      className="shadow-sm appearance-none border rounded w-full py-2 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                    >
+                      <option value="">Select Timezone</option>
+                      <option value="EST">Eastern Time (EST)</option>
+                      <option value="CST">Central Time (CST)</option>
+                      <option value="MST">Mountain Time (MST)</option>
+                      <option value="PST">Pacific Time (PST)</option>
+                      {/* Add more options here */}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <div className="mb-6">
-                <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2">Message</label>
+                <label htmlFor="additionalInfo" className="block text-gray-700 text-sm font-bold mb-2">
+                  Additional Information
+                </label>
                 <textarea
-                  {...register('message', { required: 'Message is required' })}
-                  id="message"
+                  {...register('additionalInfo')}
+                  id="additionalInfo"
                   rows={4}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                ></textarea>
-                {errors.message && <p className="text-red-500 text-xs italic">{errors.message.message}</p>}
+                  className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[#1E5C9B]"
+                />
               </div>
-              <div className="flex items-center justify-between">
+
+              <div className="flex items-center mb-6">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  {...register('terms', { required: 'You must accept the terms and conditions' })}
+                  className="mr-2"
+                />
+                <label htmlFor="terms" className="text-gray-700 text-sm">
+                  I accept KSY Group's <a href="/terms-and-conditions" className="text-[#1E5C9B] hover:underline">Terms and Conditions</a>
+                </label>
+                {errors.terms && <p className="text-red-500 text-xs italic">{errors.terms.message}</p>}
+              </div>
+
+              <div className="flex items-center justify-center">
                 <button 
                   type="submit" 
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-[#1E5C9B] hover:bg-[#164676] text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline transition duration-300 flex items-center"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Sending...' : 'Send Message'}
+                  {isLoading ? (
+                    <span className="mr-2">Sending...</span>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      <span>Send Message</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>
           )}
         </div>
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
-          <p className="mb-2"><strong>Address:</strong> 123 Main Street, Anytown, USA</p>
-          <p className="mb-2"><strong>Phone:</strong> (669) 295-3313 </p> 
-          <p className="mb-2"><strong>Email:</strong> info@ksygroup.com</p>
-          <p className="mb-4"><strong>Business Hours:</strong> Monday - Friday: 9am - 5pm</p>
-        </div>
-        </div>
+      </div>
       
       {/* FAQ Section */}
       <div className="mt-12">
@@ -160,8 +287,18 @@ export default function ContactPage() {
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h3 className="font-bold text-lg mb-2">What documents are required to understand the quality of the product?</h3>
             <p>To ensure our customers have a comprehensive understanding of our product quality, we provide several key documents:</p>
+              <ul className="list-disc list-inside mt-2">
+                <li>Certificate of Analysis (COA): Details the products composition and purity</li>
+                <li>Safety Data Sheet (SDS): Outlines safety precautions, handling procedures, and potential hazards</li>
+                <li>Technical Data Sheet (TDS): Provides specifications and performance characteristics</li>
+              </ul>
+            <p className="mt-2">These documents are available upon request for all our products. For specific documentation needs, please contact our customer service team.</p>
+          </div>
+          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h3 className="font-bold text-lg mb-2">What documents are required to understand the quality of the product?</h3>
+            <p>To ensure our customers have a comprehensive understanding of our product quality, we provide several key documents:</p>
             <ul className="list-disc list-inside mt-2">
-              <li>Certificate of Analysis (COA): Details the products composition and purity</li>
+              <li>Certificate of Analysis (COA): Details the product's composition and purity</li>
               <li>Safety Data Sheet (SDS): Outlines safety precautions, handling procedures, and potential hazards</li>
               <li>Technical Data Sheet (TDS): Provides specifications and performance characteristics</li>
             </ul>
@@ -198,6 +335,7 @@ export default function ContactPage() {
                     type="email"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
+                  {errorsSDS.email && <p className="text-red-500 text-xs italic">Valid email is required</p>}
                 </div>
                 <div className="mb-4">
                   <label htmlFor="sds-product" className="block text-gray-700 text-sm font-bold mb-2">Product</label>
@@ -211,6 +349,7 @@ export default function ContactPage() {
                       <option key={index} value={category}>{category}</option>
                     ))}
                   </select>
+                  {errorsSDS.product && <p className="text-red-500 text-xs italic">Product selection is required</p>}
                 </div>
                 <button 
                   type="submit" 
@@ -223,7 +362,7 @@ export default function ContactPage() {
           </div>
 
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h3 className="font-bold text-lg mb-2">Whats the best way to reach us?</h3>
+            <h3 className="font-bold text-lg mb-2">What's the best way to reach us?</h3>
             <p>We value clear and efficient communication with our customers. The most effective ways to reach us are:</p>
             <ul className="list-disc list-inside mt-2">
               <li>Phone: For immediate assistance, call us at (669) 295-3313 during business hours</li>
@@ -249,14 +388,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
-// Google Map
-//           <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-//             <GoogleMap
-//               mapContainerStyle={mapContainerStyle}
-//               center={center}
-//               zoom={10}
-//             >
-//               {/* You can add markers or other components here */}
-//             </GoogleMap>
-//           </LoadScript>
