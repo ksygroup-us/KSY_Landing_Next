@@ -1,13 +1,27 @@
-import { createClient } from '@supabase/supabase-js'
+/**
+ * This file contains the Supabase client configuration and a utility function to get the client.
+ * The Supabase client is initialized with the Supabase URL and an anonymous key. The URL and key are
+ * stored in environment variables. If the environment variables are not set, an error is logged to the console.
+ * The utility function returns the initialized Supabase client. The client can be used to interact with
+ * the Supabase database.
+ */
 
-const supabaseUrl = 'https://zlaoygmutbyatmoadtuj.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYW95Z211dGJ5YXRtb2FkdHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1MjAxMDksImV4cCI6MjAzOTA5NjEwOX0.0wfhMS9ZR7HAZvPjV-yeGlW6kd_4DTKGCrLc_SlsGic';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing Supabase environment variables')
 }
 
-export const supabase = createClient(supabaseUrl!, supabaseAnonKey!)
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables')
+  throw new Error('Supabase environment variables are missing')
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export const getSupabase = () => {
   if (!supabaseUrl || !supabaseAnonKey) {

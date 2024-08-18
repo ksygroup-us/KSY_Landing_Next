@@ -5,8 +5,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import { createClient } from '@/lib/utils/supabaseClient';
-import { getSupabase } from '@/lib/utils/supabaseClient'
+// import { createClient } from '@/lib/utils/supabaseClient';
+
+
+import { createClient } from '@supabase/supabase-js'
 
 
 
@@ -47,7 +49,7 @@ function ProductContent() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const supabase = getSupabase();
+      const { supabase } = (await import('@/lib/utils/supabaseClient')).default();
       const { data, error } = await supabase.from('categories').select('*');
       if (data) {
         setCategories(data);
