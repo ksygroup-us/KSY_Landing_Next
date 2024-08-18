@@ -56,35 +56,35 @@ const Hero: React.FC = () => {
             range of chemicals that cater to the diverse needs of industries worldwide.
           </p>
           <form onSubmit={handleSearch} className="flex justify-center">
-          <div className="relative w-full max-w-lg"> {/* Kept max-w-lg for the same length */}
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search products..."
-              className="w-full px-6 py-4 rounded-full text-black bg-white bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-primary shadow-md transition-all duration-300 pr-14 text-xl" // Increased padding, font size, and right padding
-            />
-            <button
-              type="submit"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-3 bg-primary rounded-full text-white hover:bg-primary-focus transition-colors duration-300"
+        <div className="relative w-full max-w-lg"> {/* Kept max-w-lg for the same length */}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search products..."
+            className="w-full px-6 py-4 rounded-full text-black bg-white bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-primary shadow-md transition-all duration-300 pr-14 text-xl" // Increased padding, font size, and right padding
+          />
+          <button
+            type="submit"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 p-3 bg-primary rounded-full text-white hover:bg-primary-focus transition-colors duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7" // Increased icon size
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7" // Increased icon size
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
-        </form>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+        </div>
+      </form>
         </div>
       </div>
 

@@ -8,3 +8,14 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+
+
+/** @type {import('next').NextConfig} */
+const nextConfig1 = {
+  experimental: {
+    appDir: true,
+  },
+}
+
+module.exports = nextConfig
