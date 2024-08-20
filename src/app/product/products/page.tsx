@@ -5,7 +5,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Suspense } from 'react';
-// import { createClient } from '@/lib/utils/supabaseClient';
 
 
 import { createClient } from '@supabase/supabase-js'
@@ -49,31 +48,31 @@ function ProductContent() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { supabase } = (await import('@/lib/utils/supabaseClient')).default();
-      const { data, error } = await supabase.from('categories').select('*');
+      const { supabase } = (await import('@/lib/utils/supabaseClient')).default()
+      const { data, error } = await supabase.from('categories').select('*')
       if (data) {
-        setCategories(data);
-        setSelectedCategory(data[0]);
+        setCategories(data)
+        setSelectedCategory(data[0])
       }
-    };
-    fetchCategories();
-  }, []);
+    }
+    fetchCategories()
+  }, [])
 
   useEffect(() => {
     const fetchProducts = async () => {
       if (selectedCategory) {
-        const supabase = createClient();
+        const { supabase } = (await import('@/lib/utils/supabaseClient')).default()
         const { data, error } = await supabase
           .from('products')
           .select('*')
-          .eq('category', selectedCategory.name);
+          .eq('category', selectedCategory.name)
         if (data) {
-          setProducts(data);
+          setProducts(data)
         }
       }
-    };
-    fetchProducts();
-  }, [selectedCategory]);
+    }
+    fetchProducts()
+  }, [selectedCategory])
 
   useEffect(() => {
     const category = searchParams.get('category');
