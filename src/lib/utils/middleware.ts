@@ -8,8 +8,8 @@
  * @returns {NextResponse} The modified Next.js response object with the
  * Supabase client and cookies set up.
  */
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export const createClient = (request: NextRequest) => {
   // Create an unmodified response

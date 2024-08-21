@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState , useRef , useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,34 +9,31 @@ import ProductSection from '@/components/Home_Products'
 import ServicesPage from '@/components/Home_Services';
 import NewsletterSignup from '@/components/newslettersignup';
 
-const productCategories = [
-  { name: "Organic Chemicals", subtext: "Carbon-based compounds Bulk & Fine Chemicals", image: "/images/organic-chemicals.jpeg" },
-  { name: "Inorganic Chemicals", subtext: "Mineral-based chemicals for industrial use", image: "/images/inorganic-chemicals.jpg" },
-  { name: "Agro Chemicals", subtext: "Enhancing agricultural productivity and crop protection", image: "/images/agro-chemicals.jpg" },
-  { name: "Cosmetic Chemicals", subtext: "Innovative solutions for personal care products", image: "/images/cosmetic-chemicals.jpg" },
-  { name: "Construction Chemicals", subtext: "Improving durability and performance in building materials", image: "/images/construction-chemicals.jpg" },
-  { name: "Nutraceuticals", subtext: "Health-promoting compounds for dietary supplements", image: "/images/nutraceuticals.jpg" }
-];
+// Add this interface for the core values
+interface CoreValue {
+  title: string;
+  description: string;
+}
 
-const coreValues = [
+// Define the coreValues array
+const coreValues: CoreValue[] = [
   {
-    title: 'Trust',
-    description: 'Built on a foundation of integrity, our partnerships are characterized by transparency, reliability, and a deep commitment to our clients’ success.'
+    title: "Quality",
+    description: "We are committed to providing the highest quality chemicals and services."
   },
   {
-    title: 'Expertise',
-    description: 'Our team’s unparalleled knowledge and industry experience enable us to deliver innovative solutions tailored to the unique challenges of our clients.'
+    title: "Innovation",
+    description: "We continuously seek innovative solutions to meet our customers' needs."
   },
   {
-    title: 'Agility',
-    description: 'In a rapidly evolving industry, we pride ourselves on our ability to adapt swiftly and efficiently, ensuring we meet the dynamic needs of our clients.'
+    title: "Integrity",
+    description: "We conduct our business with the utmost integrity and transparency."
   },
   {
-    title: 'Quality',
-    description: 'We adhere to the highest standards of excellence, ensuring that every product we deliver meets rigorous quality benchmarks and exceeds customer expectations.'
+    title: "Customer Focus",
+    description: "Our customers' success is at the heart of everything we do."
   }
 ];
-
 
 export default function Home() {
   const router = useRouter();
@@ -44,27 +41,24 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubscribe = async (email: string) => {
     try {
-      const response = await fetch('/api/newsletter', {
+      const response = await fetch('/api/send-newsletter-welcome', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ email }),
       });
 
-      if (response.ok) {
-        setSubscriptionStatus('success');
-        setEmail('');
-      } else {
-        throw new Error('Subscription failed');
+      if (!response.ok) {
+        throw new Error('Failed to send welcome email');
       }
+
+      const data = await response.json();
+      console.log('Welcome email sent successfully:', data);
     } catch (error) {
-      console.error('Error:', error);
-      setSubscriptionStatus('error');
-    } finally {
-      setIsLoading(false);
+      console.error('Error in handleSubscribe:', error);
     }
   };
 
@@ -85,8 +79,9 @@ export default function Home() {
 
   const handleProductClick = (category: string) => {
     router.push(`/products?category=${encodeURIComponent(category)}`);
-  };return (
-    
+  };
+
+  return (
     <div className="flex flex-col min-h-screen">
       {/* <HeroComponent /> */}
       {/* Hero Section */}
@@ -209,7 +204,7 @@ export default function Home() {
       Founded amidst the challenges of the 2020 global pandemic, KSY Group LLC has swiftly emerged as a leader in the world of chemical distribution. Our journey is rooted in a visionary approach, driven by a steadfast commitment to delivering quality, fostering innovation, and achieving unparalleled customer satisfaction. As a trusted partner to industries worldwide, we pride ourselves on offering a comprehensive portfolio of chemicals that meet the highest standards of excellence.
     </p>
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {coreValues.map((value, index) => (
+          {coreValues.map((value: CoreValue, index: number) => (
             <div key={index} className="bg-base-100 p-4 rounded-lg shadow">
               <h3 className="font-bold text-lg mb-2">{value.title}</h3>
               <p className="text-sm">{value.description}</p>
@@ -220,49 +215,7 @@ export default function Home() {
   </div>
 </section>
 
-<NewsletterSignup
-        handleSubscribe={handleSubscribe}
-        email={email}
-        setEmail={setEmail}
-        subscriptionStatus={subscriptionStatus}
-        isLoading={isLoading}
-      />
-      {/* Newsletter Signup */}
-      {/* <section className="bg-primary text-white py-10 md:py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 text-center">Stay Informed</h2>
-          <p className="text-xl mb-8 text-center">Subscribe to our newsletter for the latest chemical industry updates and exclusive offers.</p>
-          {subscriptionStatus === 'success' ? (
-            <div className="alert alert-success">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>Thank you for subscribing! Check your email for a confirmation message.</span>
-            </div>
-          ) : subscriptionStatus === 'error' ? (
-            <div className="alert alert-error">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>Oops! Something went wrong. Please try again later or contact us for assistance.</span>
-            </div>
-          ) : (
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row justify-center items-center">
-              <input 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address" 
-                className="input input-bordered w-full max-w-xs mb-2 sm:mb-0 sm:mr-2" 
-                required
-              />
-              <button 
-                type="submit" 
-                className={`btn btn-secondary ${isLoading ? 'loading' : ''}`}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
-          )}
-        </div>
-      </section> */}
+<NewsletterSignup handleSubscribe={handleSubscribe} />
     </div>
   );
 }

@@ -15,11 +15,16 @@ console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_A
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const  supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
 
-// export const default getSupabase = () => {
-//   if (!supabaseUrl || !supabaseAnonKey) {
-//     console.error('Missing Supabase environment variables');
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Uncomment and use this function if you want to get the Supabase client on demand
+// export function getSupabase() {
+//   return supabase;
+// }
 //     throw new Error('Supabase environment variables are missing');
 //   }
 //   return supabase

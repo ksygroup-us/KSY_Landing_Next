@@ -139,10 +139,10 @@ export default function ProductDetails() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <h3 className="text-lg font-semibold">Chemical Properties</h3>
-                      <p><strong>Molecular Formula:</strong> {productData.molecularFormula}</p>
-                      <p><strong>Molecular Weight:</strong> {productData.molecularWeight}</p>
-                      <p><strong>CAS Number:</strong> {productData.casNumber}</p>
-                      <p><strong>EINECS Number:</strong> {productData.einecsNumber}</p>
+                      <p><strong>Molecular Formula:</strong> {productData.molecular_formula}</p>
+                      <p><strong>Molecular Weight:</strong> {productData.molecular_formula}</p>
+                      <p><strong>CAS Number:</strong> {productData.cas_number}</p>
+                      <p><strong>EINECS Number:</strong> {productData.einecs_number}</p>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold">Other Information</h3>

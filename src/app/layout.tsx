@@ -2,12 +2,12 @@ import { Analytics } from '@vercel/analytics/react';
 import { Roboto, Merriweather } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ChatBot from '@/components/ChatBot'; // Add this import
+import ChatBot from '@/components/ChatBot';
 import Script from 'next/script';
 import '../styles/globals.css';
 
-const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] });
-const merriweather = Merriweather({ subsets: ['latin'], weight: ['400', '700'] });
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-roboto' });
+const merriweather = Merriweather({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-merriweather' });
 
 export const metadata = {
   title: 'KSY Group - Your Trusted Chemical Importer',
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="mytheme">
+    <html lang="en" data-theme="mytheme" className={`${roboto.variable} ${merriweather.variable}`}>
       <head>
         <Script
           strategy="afterInteractive"
@@ -35,11 +35,11 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${roboto.className} text-gray-800`}>
+      <body className="font-sans text-gray-800">
         <Header />
         <main>{children}</main>
         <Footer />
-        <ChatBot /> {/* Add this line */}
+        {/* <ChatBot /> */}
         <Analytics />
       </body>
     </html>
