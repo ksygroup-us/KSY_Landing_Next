@@ -67,14 +67,21 @@ export default function Header() {
     <header className="bg-white text-black shadow-md relative z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          {/* Left: Logo */}
+          {/* Left: Mobile Menu Button and Logo */}
           <div className="flex items-center">
+            {/* Mobile Menu Button */}
+            <button className="lg:hidden mr-4 focus:outline-none" onClick={toggleSidebar} aria-label="Toggle menu">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+
+            {/* Logo (made bigger) */}
             <Link href="/" className="flex items-center">
-              <Image src="/images/KSY LOGO FILE.png" alt="KSY Group Logo" width={108} height={57} priority className="mr-2" />
+              <Image src="/images/KSY LOGO FILE.png" alt="KSY Group Logo" width={140} height={74} priority className="mr-2" />
             </Link>
           </div>
 
-          {/* Center: Navigation Links */}
           {/* Center: Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-6">
             <NavLink href="/">Home</NavLink>
@@ -122,12 +129,12 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button className="lg:hidden focus:outline-none" onClick={toggleSidebar} aria-label="Toggle menu">
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+          {/* Mobile Get a Quote Button */}
+          <div className="lg:hidden">
+            <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-4 py-1 text-sm hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+              Get a Quote
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -169,15 +176,9 @@ export default function Header() {
             <SidebarLink href="/about" onClick={closeSidebar}>About</SidebarLink>
             <SidebarLink href="/newsletter" onClick={closeSidebar}>Newsletter</SidebarLink>
             <SidebarLink href="/contact" onClick={closeSidebar}>Contact</SidebarLink>
-            <li className="mt-4">
-              <Link href="/contact" className="block w-full text-center bg-[rgb(106,27,154)] text-black rounded-full px-4 py-2 hover:bg-[rgb(86,7,134)] transition duration-300" onClick={closeSidebar}>
-                Get a Quote
-              </Link>
-            </li>
           </ul>
         </div>
       </div>
     </header>
   );
 }
-

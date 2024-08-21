@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import HeroComponent from '@/components/Hero'
 import ProductSection from '@/components/Home_Products'
 import ServicesPage from '@/components/Home_Services';
@@ -36,7 +35,6 @@ const coreValues: CoreValue[] = [
 ];
 
 export default function Home() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -76,10 +74,6 @@ export default function Home() {
 
     return () => clearInterval(intervalId);
   }, [isPaused]);
-
-  const handleProductClick = (category: string) => {
-    router.push(`/products?category=${encodeURIComponent(category)}`);
-  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -127,12 +121,12 @@ export default function Home() {
                     <h2 className="card-title text-lg">{category.name}</h2>
                     <p className="text-sm">{category.subtext}</p>
                     <div className="card-actions justify-end mt-2">
-                      <button 
-                        onClick={() => handleProductClick(category.name)}
+                      <Link 
+                        to={`/products?category=${encodeURIComponent(category.name)}`}
                         className="btn btn-primary btn-sm"
                       >
                         Explore
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
