@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { Button } from "@/components/ui/button"
 
 const coreValues = [
   {

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Button } from "@/components/ui/button"
 
 interface Newsletter {
   id: number;
@@ -74,9 +75,11 @@ const RecentNewsletters: React.FC = () => {
                 <h3 className="card-title">{newsletter.title}</h3>
                 <p className="text-sm text-gray-500">{new Date(newsletter.date).toLocaleDateString()}</p>
                 <div className="card-actions justify-end mt-4">
-                  <Link href={newsletter.link} className="btn btn-primary btn-sm">
-                    Read More
-                  </Link>
+                  <Button variant="default" size="sm">
+                    <Link href={newsletter.link}>
+                      Read More
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </motion.div>

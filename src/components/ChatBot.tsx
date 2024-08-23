@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { MessageSquare, X, Send } from 'lucide-react';
+import { Button } from "@/components/ui/button"
 
 const prePrompts = [
   "Tell me about your chemical importing services",

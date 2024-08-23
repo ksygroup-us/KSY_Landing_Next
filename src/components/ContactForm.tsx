@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Send, Mail, Phone, Building, Globe, FileText } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
+import { Button } from "@/components/ui/button"
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -284,11 +285,11 @@ const ContactForm: React.FC = () => {
       </div>
 
       <div className="form-control">
-        <label className="label cursor-pointer">
-          <input type="checkbox" className="checkbox" required />
-          <span className="label-text ml-2">
+        <label className="label cursor-pointer justify-start">
+          <input type="checkbox" className="checkbox mr-2" required />
+          <span className="label-text">
             I accept KSY Group's{' '}
-            <a href="/terms-and-conditions" className="link link-primary">
+            <a href="/legal/termsOfUse" className="link link-primary">
               Terms and Conditions
             </a>
           </span>
@@ -296,7 +297,13 @@ const ContactForm: React.FC = () => {
       </div>
 
       <div className="flex justify-center">
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          variant="default" 
+          size="lg" 
+          disabled={isSubmitting}
+          className="w-full md:w-auto"
+        >
           {isSubmitting ? (
             <span className="loading loading-spinner"></span>
           ) : (
@@ -305,7 +312,7 @@ const ContactForm: React.FC = () => {
               Send Message
             </>
           )}
-        </button>
+        </Button>
       </div>
 
       {submitMessage && (

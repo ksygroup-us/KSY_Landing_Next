@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from "@/components/ui/button"
 
 interface ProductCategory {
   name: string;
@@ -36,12 +37,15 @@ const ProductSection: React.FC = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{category.name}</h3>
                 <p className="text-gray-600 mb-4">{category.subtext}</p>
-                <Link 
-                  href={`/product/products?category=${encodeURIComponent(category.name)}`}
-                  className="bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition-colors duration-300 inline-block"
+                <Button
+                  variant="default"
+                  size="sm"
+                  // asChild
                 >
-                  Explore
-                </Link>
+                  <Link href={`/product/products?category=${encodeURIComponent(category.name)}`}>
+                    Explore
+                  </Link>
+                </Button>
               </div>
             </div>
           ))}

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button"
 
 const productCategories = [
   "Organic Chemicals",
@@ -123,18 +124,21 @@ export default function Header() {
           </nav>
 
           {/* Right: Get a Quote Button */}
-          <div className="hidden lg:flex items-center">
+          {/* <div className="hidden lg:flex items-center">
             <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-6 py-2 hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
               Get a Quote
             </Link>
-          </div>
-
+          </div> */}
+          <Button variant="ghost" size="sm" className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+          Get a Quote
+          </Button>
           {/* Mobile Get a Quote Button */}
-          <div className="lg:hidden">
+          
+          {/* <div className="lg:hidden">
             <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-4 py-1 text-sm hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
               Get a Quote
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
 
