@@ -97,9 +97,9 @@ const AboutPage: React.FC = () => {
                 <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaLinkedin size={20} />
                 </a>
-                <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
+                {/* <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaTwitter size={20} />
-                </a>
+                </a> */}
                 <a href={`mailto:${member.email}`} className="btn btn-circle btn-outline">
                   <FaEnvelope size={20} />
                 </a>
