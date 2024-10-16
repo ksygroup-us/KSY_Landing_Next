@@ -29,16 +29,16 @@ const teamMembers = [
     role: "Head of Business Development",
     image: "/images/kathan.jpeg",    
     linkedin: "https://www.linkedin.com/in/kkp244/",
-    twitter: "https://twitter.com/kathan",
-    email: "kathan@ksygroup.com"
+    // twitter: "https://twitter.com/kathan",
+    email: "kathan@ksygroup.us"
   },
   {
     name: "Shivam Patel",
     role: "Head of Marketing",
-    image: "/images/shivam.jpeg",
+    image: "/images/Shivam Headshot.jpeg",
     linkedin: "https://www.linkedin.com/in/shivammpatel/",
-    twitter: "https://twitter.com/shivam",
-    email: "shivam@ksygroup.com"
+    // twitter: "https://twitter.com/shivam",
+    email: "shivam@ksygroup.us"
   },
 ];
 
@@ -54,7 +54,7 @@ const AboutPage: React.FC = () => {
         <div className="card-body">
           <h2 className="card-title text-3xl mb-4">Our Story</h2>
           <p className="mb-4">
-            Founded in 2020, KSY Group LLC emerged as a response to the global supply chain challenges in the chemical distribution sector. We saw an opportunity to redefine the industry and create more resilient solutions.
+            Ideated in 2020, KSY Group LLC emerged as a response to the global supply chain challenges in the chemical distribution sector. We saw an opportunity to redefine the industry and create more resilient solutions.
           </p>
           <p className="mb-4">
             Today, we focus on sourcing from India and importing to the United States, but our vision extends far beyond. We're committed to expanding our product range and global reach, always adapting to meet the needs of our international clients.
@@ -97,9 +97,9 @@ const AboutPage: React.FC = () => {
                 <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaLinkedin size={20} />
                 </a>
-                <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
+                {/* <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaTwitter size={20} />
-                </a>
+                </a> */}
                 <a href={`mailto:${member.email}`} className="btn btn-circle btn-outline">
                   <FaEnvelope size={20} />
                 </a>
