@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaGlobeAmericas, FaChartLine, FaFlask, FaShieldAlt, FaTruck, FaUserTie } from 'react-icons/fa';
+import { Button } from "@/components/ui/button"
 
 const services = [
   {
@@ -85,7 +86,9 @@ export default function ServicesPage() {
       <section className="mt-20 text-center">
         <h2 className="text-3xl font-bold text-primary mb-6">Ready to Elevate Your Chemical Sourcing?</h2>
         <p className="text-xl text-gray-700 mb-8">Let&apos;s discuss how KSY Group LLC can tailor our services to meet your unique needs.</p>
-        <a href="/contact" className="btn btn-primary btn-lg">Contact Us Today</a>
+        <Button variant="default" size="lg">
+          <a href="/contact">Contact Us Today</a>
+        </Button>
       </section>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation';
 
 interface ProductCategory {
   name: string;
@@ -19,6 +19,12 @@ const productCategories: ProductCategory[] = [
 ];
 
 const ProductSection: React.FC = () => {
+  const router = useRouter();
+
+  const handleProductClick = (category: string) => {
+    router.push(`/product/products?category=${encodeURIComponent(category)}`);
+  };
+
   return (
     <section className="bg-gray-100 py-10 md:py-20">
       <div className="container mx-auto px-4">
@@ -37,15 +43,12 @@ const ProductSection: React.FC = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{category.name}</h3>
                 <p className="text-gray-600 mb-4">{category.subtext}</p>
-                <Button
-                  variant="default"
-                  size="sm"
-                  // asChild
+                <Link 
+                  href={`/product/products?category=${encodeURIComponent(category.name)}`}
+                  className="bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition-colors duration-300 inline-block"
                 >
-                  <Link href={`/product/products?category=${encodeURIComponent(category.name)}`}>
-                    Explore
-                  </Link>
-                </Button>
+                  Explore
+                </Link>
               </div>
             </div>
           ))}

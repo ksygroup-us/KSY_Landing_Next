@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import { MessageSquare, X } from 'lucide-react';
+import { MessageSquare, X, Send } from 'lucide-react';
+import { Button } from "@/components/ui/button"
 
 const prePrompts = [
   "Tell me about your chemical importing services",
@@ -36,49 +37,56 @@ const ChatBot: React.FC = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {isOpen ? (
-        <div className="bg-white rounded-lg shadow-xl w-80 h-96 flex flex-col">
-          <div className="bg-primary text-white p-4 rounded-t-lg flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Chat with Us</h3>
-            <button onClick={toggleChat} className="text-white hover:text-gray-200">
-              <X size={24} />
-            </button>
-          </div>
-          <div className="flex-grow overflow-y-auto p-4">
-            {messages.map((msg, index) => (
-              <div key={index} className={`mb-2 ${msg.isUser ? 'text-right' : 'text-left'}`}>
-                <span className={`inline-block p-2 rounded-lg ${msg.isUser ? 'bg-primary text-white' : 'bg-gray-200'}`}>
-                  {msg.text}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="p-4 border-t">
-            {messages.length === 0 && (
-              <div className="mb-2">
-                <p className="text-sm text-gray-600 mb-2">Quick questions:</p>
-                {prePrompts.map((prompt, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePrePromptClick(prompt)}
-                    className="btn btn-sm btn-outline btn-primary mb-1 mr-1"
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            )}
-            <div className="flex">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputMessage)}
-                placeholder="Type your message..."
-                className="flex-grow input input-bordered"
-              />
-              <button onClick={() => handleSendMessage(inputMessage)} className="btn btn-primary ml-2">
-                Send
+        <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card-body p-0">
+            <div className="bg-primary text-primary-content p-4 rounded-t-xl flex justify-between items-center">
+              <h3 className="card-title">Chat with Us</h3>
+              <button onClick={toggleChat} className="btn btn-ghost btn-circle btn-sm">
+                <X size={20} />
               </button>
+            </div>
+            <div className="h-80 overflow-y-auto p-4 space-y-4">
+              {messages.map((msg, index) => (
+                <div key={index} className={`chat ${msg.isUser ? 'chat-end' : 'chat-start'}`}>
+                  <div className={`chat-bubble ${msg.isUser ? 'chat-bubble-primary' : 'chat-bubble-secondary'}`}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="p-4 border-t">
+              {messages.length === 0 && (
+                <div className="mb-4">
+                  <p className="text-sm text-base-content opacity-70 mb-2">Quick questions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {prePrompts.map((prompt, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handlePrePromptClick(prompt)}
+                        className="btn btn-sm btn-outline btn-primary"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="join w-full">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputMessage)}
+                  placeholder="Type your message..."
+                  className="input input-bordered join-item flex-grow"
+                />
+                <button 
+                  onClick={() => handleSendMessage(inputMessage)} 
+                  className="btn btn-primary join-item"
+                >
+                  <Send size={20} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
