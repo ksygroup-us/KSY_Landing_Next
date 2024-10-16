@@ -81,7 +81,7 @@ export default function Home() {
       <HeroComponent/>
       <ProductSection />
       <ServicesPage />
-      <RecentNewsletters />
+      {/* <RecentNewsletters /> */}
       <NewsletterSignup handleSubscribe={handleSubscribe} />
     </div>
   );
