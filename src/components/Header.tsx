@@ -14,12 +14,30 @@ const productCategories = [
   "Nutraceuticals"
 ];
 
+const messages = [
+  "KSY Group proudly presents an extensive portfolio exceeding 300 diverse chemical products",
+  "Our expertise lies in specialized custom chemical sourcing and tailored solution development",
+  "KSY Group serves 7 key industries with over 300 chemical products and pleased to announce the forthcoming launch of 3 innovative features designed to enhance the experience for both buyers and sellers",
+  "Leveraging global partnerships to ensure consistent supply and competitive advantage",
+  "Our upcoming enhancements aim to streamline transactions, improve communication, and optimize supply chain efficiency for all stakeholders"
+];
+
 export default function Header() {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDetailsElement>(null);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  
+  
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+    }, 8000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleProductClick = (category: string) => {
     router.push(`/product/products?category=${encodeURIComponent(category)}`);
@@ -65,9 +83,33 @@ export default function Header() {
   );
 
   return (
-    <header className="bg-white text-black shadow-md relative z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
+    <header className="fixed top-0 left-0 right-0 bg-white text-black shadow-md z-50">
+      {/* Thin line with message */}
+      {/* Animated message bar */}
+      <div className="bg-gradient-to-r from-[#FFA500] to-[#FF69B4] text-white py-2 overflow-hidden">
+        <div className="container mx-auto">
+          <div className="flex flex-col items-center justify-center h-3">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`text-sm text-center transition-all duration-1000 ${
+                  index === currentMessageIndex
+                    ? 'opacity-100 transform translate-y-0'
+                    : 'opacity-0 transform -translate-y-full'
+                }`}
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                }}
+              >
+                {message}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="container mx-auto">
+        <div className="flex justify-between items-center py-1">
           {/* Left: Mobile Menu Button and Logo */}
           <div className="flex items-center">
             {/* Mobile Menu Button */}

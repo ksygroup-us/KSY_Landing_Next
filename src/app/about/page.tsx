@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Image from 'next/image';
-import { FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { FaLinkedin, FaTwitter, FaEnvelope, FaGithub } from 'react-icons/fa';
 import { Button } from "@/components/ui/button"
 
 const coreValues = [
@@ -29,7 +29,8 @@ const teamMembers = [
     role: "Head of Business Development",
     image: "/images/kathan.jpeg",    
     linkedin: "https://www.linkedin.com/in/kkp244/",
-    // twitter: "https://twitter.com/kathan",
+    twitter: "https://twitter.com/patelkathan24",
+    github: "https://github.com/kathanp",
     email: "kathan@ksygroup.us"
   },
   {
@@ -37,7 +38,7 @@ const teamMembers = [
     role: "Head of Marketing",
     image: "/images/Shivam Headshot.jpeg",
     linkedin: "https://www.linkedin.com/in/shivammpatel/",
-    // twitter: "https://twitter.com/shivam",
+    twitter: "https://twitter.com/shivam",
     email: "shivam@ksygroup.us"
   },
 ];
@@ -97,9 +98,12 @@ const AboutPage: React.FC = () => {
                 <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaLinkedin size={20} />
                 </a>
-                {/* <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
+                <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
                   <FaTwitter size={20} />
-                </a> */}
+                </a>
+                <a href={member.github} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
+                  <FaGithub size={20} />
+                </a>
                 <a href={`mailto:${member.email}`} className="btn btn-circle btn-outline">
                   <FaEnvelope size={20} />
                 </a>

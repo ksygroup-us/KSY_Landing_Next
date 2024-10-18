@@ -57,6 +57,102 @@ const faqData = [
         <p className="mt-2">Our customer service team is committed to responding to all inquiries within one business day.</p>
       </>
     )
+  },
+
+  {
+    question: "What types of chemicals do you import?",
+    answer: (
+      <>
+        <p>We import a wide range of chemicals to meet diverse industry needs:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Organic and inorganic chemicals</li>
+          <li>Specialty chemicals</li>
+          <li>Fine chemicals</li>
+          <li>Industrial chemicals</li>
+          <li>Pharmaceutical intermediates</li>
+          <li>Agricultural chemicals</li>
+        </ul>
+        <p className="mt-2">If you're looking for a specific chemical, please contact our sales team for more information.</p>
+      </>
+    )
+  },
+  {
+    question: "Do you offer custom chemical sourcing?",
+    answer: (
+      <>
+        <p>Yes, we offer custom chemical sourcing services. Our process includes:</p>
+        <ol className="list-decimal list-inside mt-2">
+          <li>Understanding your specific chemical requirements</li>
+          <li>Leveraging our global network to find suitable suppliers</li>
+          <li>Verifying the quality and reliability of potential sources</li>
+          <li>Negotiating terms and pricing on your behalf</li>
+          <li>Managing the import process from order to delivery</li>
+        </ol>
+        <p className="mt-2">Contact our team to discuss your custom sourcing needs.</p>
+      </>
+    )
+  },
+  {
+    question: "What are your minimum order quantities?",
+    answer: (
+      <>
+        <p>Our minimum order quantities (MOQs) vary depending on the product:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Bulk chemicals: Typically 1 metric ton or more</li>
+          <li>Specialty chemicals: Often available in smaller quantities, starting from 25kg</li>
+          <li>Custom-sourced chemicals: MOQs are determined on a case-by-case basis</li>
+        </ul>
+        <p className="mt-2">For specific MOQ information on a product, please contact our sales team.</p>
+      </>
+    )
+  },
+  {
+    question: "How do you ensure the quality of imported chemicals?",
+    answer: (
+      <>
+        <p>We maintain strict quality control measures throughout our import process:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Sourcing only from reputable, certified manufacturers</li>
+          <li>Conducting regular supplier audits</li>
+          <li>Verifying Certificates of Analysis (COA) for each batch</li>
+          <li>Performing random quality checks upon receipt</li>
+          <li>Ensuring proper storage and handling during transportation</li>
+        </ul>
+        <p className="mt-2">Our commitment to quality ensures that you receive products meeting the highest industry standards.</p>
+      </>
+    )
+  },
+  {
+    question: "What are your payment terms?",
+    answer: (
+      <>
+        <p>We offer flexible payment terms to suit various business needs:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Net 30 days for established customers</li>
+          <li>Letter of Credit (LC) for large international orders</li>
+          <li>Advance payment for new customers or special orders</li>
+          <li>Partial advance payment options available for select cases</li>
+        </ul>
+        <p className="mt-2">Specific payment terms are discussed during the quotation process and may vary based on order value and history.</p>
+      </>
+    )
+  },
+  {
+    question: "How do you handle shipping and logistics?",
+    answer: (
+      <>
+        <p>Our comprehensive shipping and logistics services include:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Air, sea, and land freight options</li>
+          <li>Customs clearance assistance</li>
+          <li>Proper documentation for smooth import processes</li>
+          <li>Handling of hazardous materials and temperature-sensitive products</li>
+          <li>Real-time shipment tracking</li>
+          <li>Door-to-door delivery options</li>
+        </ul>
+        <p className="mt-2">We work with reliable logistics partners to ensure safe and timely delivery of your orders.</p>
+      </>
+    )
   }
 ];
 
