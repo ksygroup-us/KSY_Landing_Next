@@ -37,7 +37,9 @@ export default function RootLayout({
       </head>
       <body className="font-sans text-gray-800">
         <Header />
-        <main>{children}</main>
+        <div className="pt-[calc(64px+2rem)] md:pt-[calc(80px+2rem)] lg:pt-[calc(96px+2rem)]">
+          <main>{children}</main>
+        </div>
         <Footer />
         {/* <ChatBot /> */}
         <Analytics />

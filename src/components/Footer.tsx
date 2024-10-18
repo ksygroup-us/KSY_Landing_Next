@@ -61,18 +61,18 @@ export default function Footer() {
           <p className="text-sm">&copy; 2024 KSY Group LLC. All rights reserved.</p>
         </div>
         <div className="flex gap-6 mt-4 md:mt-0">
-          {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-600 transition-colors duration-400">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-600 transition-colors duration-400">
             <FaFacebookF size={46} />
-          </a> */}
-          {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors duration-400">
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors duration-400">
             <FaTwitter size={46} />
-          </a> */}
+          </a>
           <a href="https://www.linkedin.com/company/ksy-group" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-700 transition-colors duration-400">
             <FaLinkedinIn size={46} />
           </a>
-          {/* <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-500 transition-colors duration-400">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-500 transition-colors duration-400">
             <FaInstagram size={50} />
-          </a> */}
+          </a>
         </div>
       </div>
     </footer>
