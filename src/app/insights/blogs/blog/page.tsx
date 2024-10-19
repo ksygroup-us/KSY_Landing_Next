@@ -456,9 +456,8 @@ export default function BlogPost() {
           <Image
             src={post.image}
             alt={post.title}
-            layout="fill"
-            objectFit="cover"
-            className="transition-transform duration-500 hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
           />
         </div>
         

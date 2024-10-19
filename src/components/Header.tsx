@@ -8,9 +8,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
+// import QuoteModal from './QuoteModal'; // Make sure to import the QuoteModal component
 
 import { blogs } from '@/app/insights/blogs/blogs';
 import { blogCategories } from '@/app/insights/blogs/blogCategories';
+import QuoteModal from '@/components/quoteModel';
 
 const productCategories = [
   "Organic Chemicals",
@@ -38,6 +40,14 @@ export default function Header() {
   const productsRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  
+
+  const openQuoteModal = () => setIsQuoteModalOpen(true);
+  const closeQuoteModal = () => setIsQuoteModalOpen(false);
+
+// In your return statement, near the end:
+<QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuoteModal} />
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -212,7 +222,11 @@ export default function Header() {
           </nav>
 
           {/* Right: Get a Quote Button */}
-          <Button variant="ghost" size="sm" className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+          <Button
+            onClick={openQuoteModal}
+            variant="ghost"
+            size="sm"
+            className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-white transition duration-300">
             Get a Quote
           </Button>
         </div>
@@ -273,6 +287,9 @@ export default function Header() {
           </ul>
         </div>
       </div>
+
+      {/* Quote Modal */}
+      <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuoteModal} />
     </header>
   );
 }
