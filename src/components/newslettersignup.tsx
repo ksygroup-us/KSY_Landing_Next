@@ -1,14 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { createClient } from '@supabase/supabase-js';
-import { Button } from "@/components/ui/button"
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { Button } from "@/components/ui/button";
 
 interface NewsletterSignupProps {
   handleSubscribe: (email: string) => Promise<void>;

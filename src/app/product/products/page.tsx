@@ -3,8 +3,9 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from "@/components/ui/button"
+import { supabase } from '@/lib/utils/supabaseClient'; // Import the supabase client
+
 
 interface Chemical {
   id: number;
@@ -39,7 +40,7 @@ function ProductsContent() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [chemicals, setChemicals] = useState<Chemical[]>([]);
   const [expandedChemical, setExpandedChemical] = useState<number | null>(null);
-  const supabase = createClientComponentClient();
+  
 
   useEffect(() => {
     const fetchCategories = async () => {
