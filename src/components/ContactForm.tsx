@@ -1,14 +1,9 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Send, Mail, Phone, Building, Globe, FileText } from 'lucide-react';
-import { createClient } from '@supabase/supabase-js';
-import { Button } from "@/components/ui/button"
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { Button } from "@/components/ui/button";
+// Import the Supabase client from the utils file
+import { supabase } from '@/lib/utils/supabaseClient'; // Adjust the path as necessary
 
 interface Category {
   id: string;
