@@ -3,7 +3,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+<<<<<<< HEAD
+import { Button } from "@/components/ui/button";
+// import QuoteModal from './QuoteModal'; // Make sure to import the QuoteModal component
+
+import { blogs } from '@/app/insights/blogs/blogs';
+import { blogCategories } from '@/app/insights/blogs/blogCategories';
+import QuoteModal from '@/components/quoteModel';
+=======
 import { Button } from "@/components/ui/button"
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
 
 const productCategories = [
   "Organic Chemicals",
@@ -29,8 +38,20 @@ export default function Header() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDetailsElement>(null);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+<<<<<<< HEAD
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  
+
+  const openQuoteModal = () => setIsQuoteModalOpen(true);
+  const closeQuoteModal = () => setIsQuoteModalOpen(false);
+
+// In your return statement, near the end:
+<QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuoteModal} />
+
+=======
   
   
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
@@ -166,6 +187,14 @@ export default function Header() {
           </nav>
 
           {/* Right: Get a Quote Button */}
+<<<<<<< HEAD
+          <Button
+            onClick={openQuoteModal}
+            variant="ghost"
+            size="sm"
+            className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-white transition duration-300">
+            Get a Quote
+=======
           {/* <div className="hidden lg:flex items-center">
             <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-6 py-2 hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
               Get a Quote
@@ -173,6 +202,7 @@ export default function Header() {
           </div> */}
           <Button variant="ghost" size="sm" className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
           Get a Quote
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
           </Button>
           {/* Mobile Get a Quote Button */}
           
@@ -225,6 +255,9 @@ export default function Header() {
           </ul>
         </div>
       </div>
+
+      {/* Quote Modal */}
+      <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuoteModal} />
     </header>
   );
 }
