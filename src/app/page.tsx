@@ -9,8 +9,6 @@ import ServicesPage from '@/components/Home_Services';
 import NewsletterSignup from '@/components/newslettersignup';
 import RecentNewsletters from '@/components/RecentNewsletters';
 
-
-
 // Add this interface for the core values
 interface CoreValue {
   title: string;

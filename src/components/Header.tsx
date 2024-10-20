@@ -1,18 +1,18 @@
-/**
- * Header component with navigation links and a mobile sidebar
- **/
-
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 // import QuoteModal from './QuoteModal'; // Make sure to import the QuoteModal component
 
 import { blogs } from '@/app/insights/blogs/blogs';
 import { blogCategories } from '@/app/insights/blogs/blogCategories';
 import QuoteModal from '@/components/quoteModel';
+=======
+import { Button } from "@/components/ui/button"
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
 
 const productCategories = [
   "Organic Chemicals",
@@ -35,11 +35,10 @@ export default function Header() {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [isInsightsOpen, setIsInsightsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const productsRef = useRef<HTMLDivElement>(null);
-  const insightsRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDetailsElement>(null);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+<<<<<<< HEAD
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   
 
@@ -49,6 +48,10 @@ export default function Header() {
 // In your return statement, near the end:
 <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuoteModal} />
 
+=======
+  
+  
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
@@ -66,17 +69,10 @@ export default function Header() {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
 
-  const toggleProducts = () => {
-    setIsProductsOpen(!isProductsOpen);
-    setIsInsightsOpen(false);
-  };
-  const toggleInsights = () => {
-    setIsInsightsOpen(!isInsightsOpen);
-    setIsProductsOpen(false);
-  };
+  const toggleProducts = () => setIsProductsOpen(!isProductsOpen);
   const closeDropdowns = () => {
     setIsProductsOpen(false);
-    setIsInsightsOpen(false);
+    if (dropdownRef.current) dropdownRef.current.open = false;
   };
 
   useEffect(() => {
@@ -84,10 +80,7 @@ export default function Header() {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
         closeSidebar();
       }
-      if (
-        (productsRef.current && !productsRef.current.contains(event.target as Node)) &&
-        (insightsRef.current && !insightsRef.current.contains(event.target as Node))
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         closeDropdowns();
       }
     };
@@ -97,30 +90,22 @@ export default function Header() {
   }, []);
 
   const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-    <Link href={href} className="text-lg font-semibold hover:text-[rgb(106,27,154)] transition duration-300">
+    <Link href={href} className="text-lg font-semibold hover:text-black transition duration-300">
       {children}
     </Link>
   );
 
-  const SidebarLink: React.FC<{ href: string; onClick?: () => void; children: React.ReactNode; hasDropdown?: boolean }> = ({ href, onClick, children, hasDropdown }) => (
+  const SidebarLink: React.FC<{ href: string; onClick?: () => void; children: React.ReactNode }> = ({ href, onClick, children }) => (
     <li>
-      <Link 
-        href={href} 
-        className={`block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300 ${hasDropdown ? 'flex items-center justify-between' : ''}`} 
-        onClick={onClick}
-      >
+      <Link href={href} className="block py-2 px-4 text-lg hover:text-black transition duration-300" onClick={onClick}>
         {children}
-        {hasDropdown && (
-          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        )}
       </Link>
     </li>
   );
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white text-black shadow-md z-50">
+      {/* Thin line with message */}
       {/* Animated message bar */}
       <div className="bg-gradient-to-r from-[#FFA500] to-[#FF69B4] text-white py-2 overflow-hidden">
         <div className="container mx-auto">
@@ -148,11 +133,14 @@ export default function Header() {
         <div className="flex justify-between items-center py-1">
           {/* Left: Mobile Menu Button and Logo */}
           <div className="flex items-center">
+            {/* Mobile Menu Button */}
             <button className="lg:hidden mr-4 focus:outline-none" onClick={toggleSidebar} aria-label="Toggle menu">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
+
+            {/* Logo (made bigger) */}
             <Link href="/" className="flex items-center">
               <Image src="/images/KSY LOGO FILE.png" alt="KSY Group Logo" width={140} height={74} priority className="mr-2" />
             </Link>
@@ -161,7 +149,7 @@ export default function Header() {
           {/* Center: Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-6">
             <NavLink href="/">Home</NavLink>
-            <div ref={productsRef} className="relative">
+            <div className="relative group">
               <button 
                 onClick={toggleProducts} 
                 className="text-lg font-semibold text-black hover:text-[rgb(106,27,154)] transition duration-300 flex items-center"
@@ -178,7 +166,7 @@ export default function Header() {
                 </svg>
               </button>
               {isProductsOpen && (
-                <ul className="absolute left-0 mt-4 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <ul className="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                   {productCategories.map((category, index) => (
                     <li key={index}>
                       <a 
@@ -194,41 +182,35 @@ export default function Header() {
             </div>
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/about">About</NavLink>
-            <div ref={insightsRef} className="relative">
-              <button 
-                onClick={toggleInsights} 
-                className="text-lg font-semibold text-black hover:text-[rgb(106,27,154)] transition duration-300 flex items-center"
-              >
-                KSY Insights
-                <svg 
-                  className={`w-5 h-5 ml-2 transition-transform duration-200 ${isInsightsOpen ? 'transform rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {isInsightsOpen && (
-                <ul className="absolute left-0 mt-4 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                  <li><Link href="/insights/newspaper" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Newspaper</Link></li>
-                  <li><Link href="/insights/report" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Reports</Link></li>
-                  <li><Link href="/insights/blogs" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Blogs</Link></li>
-                </ul>
-              )}
-            </div>
+            <NavLink href="/newsletter">Newsletter</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </nav>
 
           {/* Right: Get a Quote Button */}
+<<<<<<< HEAD
           <Button
             onClick={openQuoteModal}
             variant="ghost"
             size="sm"
             className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-white transition duration-300">
             Get a Quote
+=======
+          {/* <div className="hidden lg:flex items-center">
+            <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-6 py-2 hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+              Get a Quote
+            </Link>
+          </div> */}
+          <Button variant="ghost" size="sm" className="text-black border border-[rgb(106,27,154)] rounded-full hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+          Get a Quote
+>>>>>>> fcd50108d6bb9486f4c75dfb31664a61cca1c4c9
           </Button>
+          {/* Mobile Get a Quote Button */}
+          
+          {/* <div className="lg:hidden">
+            <Link href="/contact" className="btn btn-ghost text-black border border-[rgb(106,27,154)] rounded-full px-4 py-1 text-sm hover:bg-[rgb(106,27,154)] hover:text-black transition duration-300">
+              Get a Quote
+            </Link>
+          </div> */}
         </div>
       </div>
 
@@ -248,17 +230,17 @@ export default function Header() {
           <ul className="mt-12">
             <SidebarLink href="/" onClick={closeSidebar}>Home</SidebarLink>
             <li>
-              <button onClick={toggleProducts} className="flex justify-between items-center w-full py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300">
+              <button onClick={toggleProducts} className="flex justify-between items-center w-full py-2 px-4 text-lg hover:text-black transition duration-300">
                 Products
                 <svg className={`w-5 h-5 transition-transform duration-200 ${isProductsOpen ? 'transform rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {isProductsOpen && (
-                <ul className="ml-4 mt-2">
+                <ul className="ml-4">
                   {productCategories.map((category, index) => (
                     <li key={index}>
-                      <a onClick={() => handleProductClick(category)} className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] cursor-pointer transition duration-300">
+                      <a onClick={() => handleProductClick(category)} className="block py-2 px-4 text-lg hover:text-black cursor-pointer transition duration-300">
                         {category}
                       </a>
                     </li>
@@ -268,21 +250,7 @@ export default function Header() {
             </li>
             <SidebarLink href="/services" onClick={closeSidebar}>Services</SidebarLink>
             <SidebarLink href="/about" onClick={closeSidebar}>About</SidebarLink>
-            <li>
-              <button onClick={toggleInsights} className="flex justify-between items-center w-full py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300">
-                KSY Insights
-                <svg className={`w-5 h-5 transition-transform duration-200 ${isInsightsOpen ? 'transform rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {isInsightsOpen && (
-                <ul className="ml-4 mt-2">
-                  <li><Link href="/insights/newspaper" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Newspaper</Link></li>
-                  <li><Link href="/insights/report" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Reports</Link></li>
-                  <li><Link href="/insights/blog" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Blogs</Link></li>
-                </ul>
-              )}
-            </li>
+            <SidebarLink href="/newsletter" onClick={closeSidebar}>Newsletter</SidebarLink>
             <SidebarLink href="/contact" onClick={closeSidebar}>Contact</SidebarLink>
           </ul>
         </div>
