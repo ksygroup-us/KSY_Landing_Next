@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
+import { supabase } from '@/lib/utils/supabaseClient'; 
+
 
 interface NewsletterSignupProps {
   handleSubscribe: (email: string) => Promise<void>;

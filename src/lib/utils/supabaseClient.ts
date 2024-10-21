@@ -17,3 +17,4 @@ export default function getSupabaseClient() {
 // For debugging purposes, you can uncomment these lines:
 // console.log('Supabase URL:', supabaseUrl);
 // console.log('Supabase Anon Key:', supabaseAnonKey);
+

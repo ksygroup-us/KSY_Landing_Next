@@ -10,8 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 // import QuoteModal from './QuoteModal'; // Make sure to import the QuoteModal component
 
-import { blogs } from '@/app/insights/blogs/blog';
-// import { blogCategories } from '@/app/insights/blogs/blogCategories'; // Unused import
+import BlogsPage from '@/app/insights/blog/page'; // Change to default import
 import QuoteModal from '@/components/quoteModel';
 
 const productCategories = [
@@ -214,7 +213,7 @@ export default function Header() {
                 <ul className="absolute left-0 mt-4 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                   <li><Link href="/insights/newspaper" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Newspaper</Link></li>
                   <li><Link href="/insights/report" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Reports</Link></li>
-                  <li><Link href="/insights/blogs" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Blogs</Link></li>
+                  <li><Link href="/insights/blog" className="block px-4 py-2 text-lg text-black hover:text-[rgb(106,27,154)] transition duration-300">Blogs</Link></li>
                 </ul>
               )}
             </div>
