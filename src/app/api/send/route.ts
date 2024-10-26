@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_123456789');
 
 export async function POST(request: Request) {
   try {
@@ -10,6 +10,7 @@ export async function POST(request: Request) {
 
     if (!process.env.RESEND_API_KEY) {
       throw new Error('RESEND_API_KEY is not set');
+      resend.apiKeys.list();
     }
 
     const { data, error } = await resend.emails.send({

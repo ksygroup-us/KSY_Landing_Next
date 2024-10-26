@@ -72,3 +72,35 @@ const ArticleList: React.FC = () => {
 };
 
 export default ArticleList;
+
+
+
+// "All Blogs",
+//  "Chemical Reports",
+// "Chemical Market",
+// "Chemical Sourcing",
+// "Flavours & Fragrances",
+// "Intermediates & Solvents",
+// "Paints & Coatings",
+// "Personal Care",
+// "Supply Chain",
+// "Technology & Digitisation",
+// "Green Chemistry",
+// "Regulatory Compliance",
+// "Industry Trends",
+// "Innovation",
+// "Sustainability",
+// "Manufacturing",
+// "Trading",
+// "Distribution",
+// "Environment",
+// "Safety",
+// "Quality Control",
+// "Risk Management",
+// "Blockchain",
+// "AI",
+// "Digital Transformation",
+// "Circular Economy",
+// "Future Trends",
+// "Strategy",
+// "Operations"

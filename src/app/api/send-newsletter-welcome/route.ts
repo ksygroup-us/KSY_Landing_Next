@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_123456789'); // Updated to use a direct string for the API key
 
 export async function POST(request: Request) {
   try {
@@ -19,6 +19,10 @@ export async function POST(request: Request) {
         <p>Best regards,<br>KSY Group Team</p>
       `,
     });
+
+    // Create an API key
+    const apiKeyResponse = await resend.apiKeys.create({ name: 'Production' });
+    console.log('API Key Created:', apiKeyResponse); // Log the response for debugging
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

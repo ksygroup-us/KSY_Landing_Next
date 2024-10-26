@@ -67,3 +67,34 @@
     @apply bg-background text-foreground;
   }
 } */
+
+
+@keyframes truckMove {
+  0% { transform: translateX(-100px); }
+  20% { transform: translateX(-50px); }
+  100% { transform: translateX(300px); }
+}
+
+@keyframes boxLoad {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-20px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+@keyframes wheelRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-truck {
+  animation: truckMove 10s ease-in-out forwards;
+}
+
+.wheel {
+  animation: wheelRotate 1s linear infinite;
+  transform-origin: center;
+}
+
+.box1 { animation: boxLoad 2s ease-out 1s forwards; }
+.box2 { animation: boxLoad 2s ease-out 3s forwards; }
+.box3 { animation: boxLoad 2s ease-out 5s forwards; }
