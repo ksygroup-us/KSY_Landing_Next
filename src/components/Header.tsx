@@ -276,9 +276,39 @@ export default function Header() {
               </button>
               {isInsightsOpen && (
                 <ul className="ml-4 mt-2">
-                  <li><Link href="/insights/newspaper" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Newspaper</Link></li>
-                  <li><Link href="/insights/report" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Reports</Link></li>
-                  <li><Link href="/insights/blog" className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" onClick={closeSidebar}>Blogs</Link></li>
+                  <li>
+                    <Link 
+                      href="/insights/newspaper" 
+                      className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" 
+                      onClick={() => {
+                        closeSidebar(); // Close sidebar on selection
+                      }}
+                    >
+                      Newspaper
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/insights/report" 
+                      className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" 
+                      onClick={() => {
+                        closeSidebar(); // Close sidebar on selection
+                      }}
+                    >
+                      Reports
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/insights/blog" 
+                      className="block py-2 px-4 text-lg hover:text-[rgb(106,27,154)] transition duration-300" 
+                      onClick={() => {
+                        closeSidebar(); // Close sidebar on selection
+                      }}
+                    >
+                      Blogs
+                    </Link>
+                  </li>
                 </ul>
               )}
             </li>
