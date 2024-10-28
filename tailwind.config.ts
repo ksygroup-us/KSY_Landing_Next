@@ -35,10 +35,13 @@ const config = {
       animation: {
         drive: 'drive 4s ease-in-out 3s forwards',
         spin: 'spin 1s linear infinite'
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
-  plugins: [require('daisyui'),require("tailwindcss-animate")],
+  plugins: [require('daisyui'), require("tailwindcss-animate"), require('@tailwindcss/line-clamp')],
   daisyui: {
     themes: [
       {

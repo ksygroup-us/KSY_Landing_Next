@@ -1,9 +1,9 @@
 //src/components/BlogArticle.tsx
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Clock, User, Share2, Twitter, Facebook, Linkedin } from 'lucide-react';
+import { Calendar, Clock, User, Share2, Twitter, Facebook, Linkedin, Download, Bookmark, Share } from 'lucide-react';
 import { blogArticles } from '@/data/blogArticles';
 
 interface BlogArticleProps {
@@ -11,7 +11,12 @@ interface BlogArticleProps {
 }
 
 const BlogArticle: React.FC<BlogArticleProps> = ({ id }) => {
+  const [showActions, setShowActions] = useState(false);
   const articleData = blogArticles[parseInt(id) as keyof typeof blogArticles];
+
+  const toggleActions = () => {
+    setShowActions(!showActions);
+  };
 
   if (!articleData) {
     return (
@@ -32,6 +37,46 @@ const BlogArticle: React.FC<BlogArticleProps> = ({ id }) => {
       <Link href="/insights/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
         ← Back to Blog
       </Link>
+
+      {/* Action Buttons - Vertical Alignment with Toggle */}
+      <div className="fixed right-8 top-1/2 transform -translate-y-1/2">
+        <button
+          onClick={toggleActions}
+          className="p-3 rounded-full bg-[rgb(106,27,154)] text-white hover:bg-[rgb(86,7,134)] transition-colors mb-2"
+        >
+          <Share2 className="w-5 h-5" />
+        </button>
+
+        {showActions && (
+          <div className="flex flex-col gap-4 transition-all duration-300">
+            {/* Primary Actions */}
+            <div className="flex flex-col gap-3">
+              <button className="p-3 rounded-full bg-[rgb(106,27,154)] text-white hover:bg-[rgb(86,7,134)] transition-colors">
+                <Download className="w-5 h-5" />
+              </button>
+              <button className="p-3 rounded-full bg-[rgb(106,27,154)] text-white hover:bg-[rgb(86,7,134)] transition-colors">
+                <Bookmark className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Divider */}
+            <div className="w-full h-px bg-gray-300"></div>
+
+            {/* Quick Actions */}
+            <div className="flex flex-col gap-3">
+              <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                <Twitter className="w-5 h-5 text-[rgb(106,27,154)]" />
+              </button>
+              <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                <Facebook className="w-5 h-5 text-[rgb(106,27,154)]" />
+              </button>
+              <button className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                <Linkedin className="w-5 h-5 text-[rgb(106,27,154)]" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="relative h-[400px] w-full mb-8 rounded-xl overflow-hidden">
         <Image
@@ -77,26 +122,6 @@ const BlogArticle: React.FC<BlogArticleProps> = ({ id }) => {
           className="prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: articleData.content }}
         />
-
-        <div className="border-t border-gray-200 pt-6 mt-8">
-          <h3 className="text-xl font-semibold mb-4 flex items-center">
-            <Share2 className="w-5 h-5 mr-2" />
-            Share this article
-          </h3>
-          <div className="flex gap-4">
-            <button className="p-3 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors">
-              <Twitter className="w-5 h-5 text-blue-600" />
-            </button>
-            <button className="p-3 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors">
-              <Facebook className="w-5 h-5 text-blue-600" />
-            </button>
-            <button className="p-3 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors">
-              <Linkedin className="w-5 h-5 text-blue-600" />
-            </button>
-    
-            {/* Add more sharing options as needed */}
-          </div>
-        </div>
       </div>
     </article>
   );

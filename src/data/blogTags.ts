@@ -1,3 +1,4 @@
+//src/data/blogTags.ts
 export const blogTags = [
   "All Blogs",
   "Chemical Reports",
