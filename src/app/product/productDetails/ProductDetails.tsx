@@ -1,5 +1,5 @@
  //src/app/product/productDetails/ProductDetails.tsx
- 'use client';
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -8,6 +8,11 @@ import { ArrowLeft, Download, Share2, AlertTriangle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from '@/lib/utils/supabaseClient';
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
 
 interface Chemical {
   id: number;
@@ -27,7 +32,7 @@ interface Chemical {
   packaging: string;
   image: string;
   safety_info: string;
-  faqs: string[];
+  faqs: FAQ[];  // Updated type
   certifications: string[];
 }
 
@@ -36,6 +41,40 @@ export default function ProductDetail() {
   const [chemical, setChemical] = useState<Chemical | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    const fetchChemical = async () => {
+      if (!params.id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('chemicals')
+          .select('*')
+          .eq('id', params.id)
+          .single();
+        
+        if (error) throw error;
+        
+        if (data) {
+          // Parse JSON strings if needed
+          const parsedData = {
+            ...data,
+            faqs: typeof data.faqs === 'string' ? 
+              JSON.parse(data.faqs) : data.faqs || [],
+            certifications: typeof data.certifications === 'string' ? 
+              JSON.parse(data.certifications) : data.certifications || []
+          };
+          setChemical(parsedData);
+        }
+      } catch (error) {
+        console.error('Error fetching chemical:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChemical();
+  }, [params.id]);
 
   useEffect(() => {
     const fetchChemical = async () => {
@@ -235,19 +274,24 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {activeTab === 'faqs' && (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {chemical.faqs.map((faq, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-medium mb-2">{faq.question}</p>
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              ))}
+        // Update only the FAQs section in the Tab Content
+          {activeTab === 'faqs' && (
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
+              <div className="space-y-4">
+                {chemical.faqs && chemical.faqs.length > 0 ? (
+                  chemical.faqs.map((faq, index) => (
+                    <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                      <p className="font-medium mb-2">{faq.question}</p>
+                      <p className="text-gray-600">{faq.answer}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No FAQs available for this product.</p>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );
