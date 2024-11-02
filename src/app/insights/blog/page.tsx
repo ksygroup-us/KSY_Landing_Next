@@ -5,7 +5,25 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { blogArticles } from '@/data/blogArticles';
-import { blogTags } from '@/data/blogTags';
+
+const tags = [
+  "All Blogs",
+  "Chemical Reports",
+  "Chemical Market",
+  "Chemical Sourcing",
+  "AI",
+  "Flavours & Fragrances",
+  "Intermediates & Solvents",
+  "Paints & Coatings",
+  "Personal Care",
+  "Supply Chain",
+  "Technology & Digitisation",
+  "Green Chemistry",
+  "Regulatory Compliance",
+  "Industry Trends",
+  "Innovation",
+  "Sustainability"
+];
 
 export default function BlogsPage() {
   const [selectedTag, setSelectedTag] = useState("All Blogs");
@@ -20,7 +38,7 @@ export default function BlogsPage() {
       
       {/* Tags */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">
-        {blogTags.map((tag) => (
+        {tags.map((tag) => (
           <button
             key={tag}
             onClick={() => setSelectedTag(tag)}
