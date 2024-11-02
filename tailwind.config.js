@@ -22,20 +22,6 @@ const config = {
         warning: '#ff9800',   // Warm Yellow/Orange
         error: '#f44336',     // Rich Red
       },
-      keyframes: {
-        drive: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(240px)' }
-        },
-        spin: {
-          from: { transform: 'rotate(0deg)' },
-          to: { transform: 'rotate(360deg)' }
-        }
-      },
-      animation: {
-        drive: 'drive 4s ease-in-out 3s forwards',
-        spin: 'spin 1s linear infinite'
-      }
     },
   },
   plugins: [require('daisyui'),require("tailwindcss-animate")],

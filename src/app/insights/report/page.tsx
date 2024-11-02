@@ -4,11 +4,22 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { 
   FileText, Download, Search, Calendar, User, Clock, Mail, Share2, FileSearch,
   BookOpen, Bookmark, Eye, ThumbsUp, Printer, ExternalLink, AlertCircle, Tag, TrendingUp, File, Save, FileDown, Star, Info, Copy, ArrowUpRight
 } from 'lucide-react'; // ... existing imports ...
+// import { Report } from '../types/report'; // Import the Report type
+import { reportService } from '@/services/reportService'; // Import the report service
+import { motion } from 'framer-motion';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+
+const gradientOverlay = `
+  linear-gradient(
+    60deg,
+    rgba(106, 27, 154, 0.95),
+    rgba(106, 27, 154, 0.85)
+  )
+`;
 
 // Enhanced Report Interface
 interface Report {
@@ -59,47 +70,6 @@ interface Report {
   };
 }
 
-// Sample enhanced report data (add this to your reportArticles)
-const sampleEnhancedReport = {
-  id: 1,
-  title: "Chemical Industry Market Analysis 2024",
-  excerpt: "Comprehensive analysis of global chemical industry trends...",
-  date: "2024-01-15",
-  author: {
-    id: "auth-001",
-    name: "Dr. Sarah Chen",
-    role: "Lead Market Analyst",
-    image: "/api/placeholder/40/40",
-    department: "Market Research"
-  },
-  image: "/api/placeholder/600/400",
-  tags: ["Market Analysis", "Industry Trends", "Global Markets"],
-  category: "Market Research",
-  downloadUrl: "/reports/chemical-industry-analysis-2024.pdf",
-  readTime: "15 min read",
-  stats: {
-    views: 1234,
-    downloads: 567,
-    likes: 89,
-    shares: 45
-  },
-  metadata: {
-    fileFormat: "PDF",
-    pageCount: 45,
-    lastUpdated: "2024-02-15",
-    version: "2.1",
-    language: "English",
-    fileSize: "4.2 MB"
-  },
-  status: "trending",
-  access: "public",
-  citations: {
-    apa: "Chen, S. (2024). Chemical Industry Market Analysis 2024...",
-    mla: "Chen, S. (2024). Chemical Industry Market Analysis 2024...",
-    chicago: "Chen, S. (2024). Chemical Industry Market Analysis 2024..."
-  }
-};
-
 // Report tags with categories
 const reportCategories = {
   "Market Research": ["Industry Analysis", "Market Trends", "Competitive Landscape", "Growth Opportunities"],
@@ -113,938 +83,6 @@ const reportCategories = {
 const allTags = ["All Reports", ...Object.keys(reportCategories), 
   ...Object.values(reportCategories).flat()];
 
-// Sample reports data (keeping your existing reports)
-const reportArticles: Record<string, Report> = {
-  'report-1': {
-    id: "market-analysis-2024",
-    title: "Chemical Industry Market Analysis 2024-2025: Post-Pandemic Recovery & Regional Growth Patterns",
-    excerpt: "Comprehensive analysis of the $4.7 trillion global chemical industry, including detailed regional forecasts, supply chain resilience strategies, and emerging market opportunities in specialty chemicals. Features insights from 200+ industry leaders and econometric modeling of key growth sectors.",
-    date: "2024-01-15",
-    author: {
-      id: "auth-001",
-      name: "Dr. Sarah Chen, Ph.D.",
-      role: "Principal Market Analyst",
-      image: "/api/placeholder/40/40",
-      department: "Market Research",
-      credentials: ["Ph.D. Chemical Engineering, MIT", "MBA, INSEAD"],
-      expertise: ["Market Analysis", "Strategic Planning", "Asian Markets"],
-      publications: 34
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Market Analysis",
-      "Industry Trends",
-      "Global Markets",
-      "Supply Chain",
-      "Specialty Chemicals",
-      "Regional Analysis"
-    ],
-    category: "Market Research",
-    downloadUrl: "/reports/chemical-industry-analysis-2024-2025.pdf",
-    readTime: "2.5 hours",
-    highlights: [
-      "Analysis of 17 key chemical segments across 6 regions",
-      "5-year growth projections with quarterly milestones",
-      "Impact assessment of new environmental regulations",
-      "Specialty chemicals market opportunity analysis",
-      "Competitive landscape analysis of top 50 global players"
-    ],
-    stats: {
-      views: 23567,
-      downloads: 4892,
-      likes: 1245,
-      shares: 892,
-      citations: 127,
-      comments: 234
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 267,
-      lastUpdated: "2024-02-15",
-      version: "3.2",
-      language: "English",
-      fileSize: "24.7 MB",
-      tables: 45,
-      figures: 68,
-      references: 189
-    },
-    status: "trending",
-    access: "premium",
-    pricing: {
-      standard: 4999,
-      enterprise: 12999,
-      academic: 1499
-    }
-  },
-  'report-2': {
-    id: "green-chemistry-2024",
-    title: "Sustainable Chemical Manufacturing 2024: ESG Implementation & Carbon Reduction Strategies",
-    excerpt: "In-depth analysis of sustainable practices in chemical manufacturing, featuring case studies from 75 leading companies achieving significant emissions reductions. Includes detailed ROI analysis of green technologies and regulatory compliance roadmaps.",
-    date: "2024-02-01",
-    author: {
-      id: "auth-002",
-      name: "Dr. John Smith",
-      role: "Head of Sustainability Research",
-      image: "/api/placeholder/40/40",
-      department: "Environmental",
-      credentials: [
-        "Ph.D. Environmental Engineering, Stanford",
-        "Certified Sustainability Professional"
-      ],
-      expertise: ["Green Chemistry", "Carbon Reduction", "ESG Integration"],
-      publications: 28
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Sustainability",
-      "ESG",
-      "Green Chemistry",
-      "Carbon Reduction",
-      "Clean Technology"
-    ],
-    category: "Environmental",
-    downloadUrl: "/reports/sustainability-report-2024.pdf",
-    readTime: "3 hours",
-    highlights: [
-      "Analysis of 75 successful sustainability implementations",
-      "Carbon reduction strategies with cost-benefit analysis",
-      "ESG compliance frameworks and metrics",
-      "Green technology ROI case studies",
-      "Regulatory compliance roadmap 2024-2030"
-    ],
-    stats: {
-      views: 18934,
-      downloads: 3567,
-      likes: 892,
-      shares: 445,
-      citations: 89,
-      comments: 156
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 312,
-      lastUpdated: "2024-02-10",
-      version: "2.3",
-      language: "English",
-      fileSize: "28.5 MB",
-      tables: 52,
-      figures: 87,
-      references: 234
-    },
-    status: "featured",
-    access: "premium",
-    methodology: {
-      researchPeriod: "2023-Q2 to 2024-Q1",
-      companiesAnalyzed: 75,
-      expertInterviews: 45,
-      casestudies: 12,
-      dataPoints: "50,000+"
-    }
-  },
-  'report-3': {
-    id: "tech-innovation-2024",
-    title: "Digital Transformation in Chemical Processing: AI, IoT & Industry 4.0 Implementation Guide",
-    excerpt: "Comprehensive analysis of emerging technologies in chemical processing, featuring practical implementation guides, ROI analysis, and real-world case studies from early adopters. Includes detailed technical specifications and integration frameworks.",
-    date: "2024-02-15",
-    author: {
-      id: "auth-003",
-      name: "Dr. Emily Johnson",
-      role: "Director of Technology Research",
-      image: "/api/placeholder/40/40",
-      department: "Technology",
-      credentials: [
-        "Ph.D. Process Engineering, UC Berkeley",
-        "MS Computer Science, Georgia Tech"
-      ],
-      expertise: ["AI/ML", "Process Optimization", "Industry 4.0"],
-      patents: 5,
-      publications: 41
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Digital Transformation",
-      "Industry 4.0",
-      "AI/ML",
-      "IoT",
-      "Process Optimization"
-    ],
-    category: "Technology",
-    downloadUrl: "/reports/emerging-tech-2024.pdf",
-    readTime: "4 hours",
-    highlights: [
-      "Comprehensive AI/ML implementation frameworks",
-      "IoT integration strategies for chemical plants",
-      "Real-time process optimization case studies",
-      "Cost-benefit analysis of digital transformations",
-      "Security and data governance frameworks"
-    ],
-    stats: {
-      views: 15678,
-      downloads: 2893,
-      likes: 678,
-      shares: 445,
-      citations: 156,
-      comments: 234
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 423,
-      lastUpdated: "2024-02-20",
-      version: "2.1",
-      language: "English",
-      fileSize: "35.8 MB",
-      tables: 67,
-      figures: 92,
-      references: 278,
-      technicalDiagrams: 45
-    },
-    status: "trending",
-    access: "enterprise",
-    pricing: {
-      standard: 5999,
-      enterprise: 14999,
-      academic: 1999
-    }
-  },
-    'report-4': {
-      id: "regulatory-compliance-2024",
-      title: "Global Chemical Regulatory Compliance Guide 2024: REACH, TSCA & International Standards",
-      excerpt: "Authoritative guide to chemical industry regulations across major markets, featuring compliance frameworks, registration procedures, and risk mitigation strategies. Includes detailed analysis of recent regulatory changes and their impact on global trade.",
-      date: "2024-03-01",
-      author: {
-        id: "auth-004",
-        name: "Dr. Michael Brown, J.D.",
-        role: "Chief Regulatory Affairs Officer",
-        image: "/api/placeholder/40/40",
-        department: "Regulatory",
-        credentials: [
-          "Ph.D. Chemistry, Harvard University",
-          "J.D. Environmental Law, Yale",
-          "Certified Regulatory Affairs Professional"
-        ],
-        expertise: ["Chemical Regulation", "International Trade", "Risk Assessment"],
-        publications: 23,
-        committees: ["EPA Advisory Board", "REACH Expert Panel"]
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Regulatory Compliance",
-        "REACH",
-        "TSCA",
-        "Risk Assessment",
-        "International Trade"
-      ],
-      category: "Regulatory",
-      downloadUrl: "/reports/regulatory-guide-2024.pdf",
-      readTime: "5 hours",
-      highlights: [
-        "Complete REACH 2024 compliance framework",
-        "TSCA registration procedures and updates",
-        "Comparative analysis of global regulations",
-        "Risk assessment methodologies",
-        "Cost of compliance analysis across regions"
-      ],
-      stats: {
-        views: 25678,
-        downloads: 6234,
-        likes: 1567,
-        shares: 892,
-        citations: 234,
-        comments: 345
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 478,
-        lastUpdated: "2024-03-05",
-        version: "4.1",
-        language: "English",
-        fileSize: "42.5 MB",
-        tables: 78,
-        figures: 56,
-        references: 312,
-        legalCitations: 145
-      },
-      status: "featured",
-      access: "enterprise",
-      pricing: {
-        standard: 6999,
-        enterprise: 15999,
-        academic: 2499
-      }
-    },
-    'report-5': {
-      id: "specialty-chemicals-2024",
-      title: "Specialty Chemicals Market Analysis 2024-2030: High-Growth Segments & Regional Opportunities",
-      excerpt: "Strategic analysis of the $800+ billion specialty chemicals market, featuring segment-wise growth projections, competitive landscape analysis, and emerging application opportunities. Includes detailed porter's five forces analysis for key segments.",
-      date: "2024-03-10",
-      author: {
-        id: "auth-005",
-        name: "Dr. Olivia Wilson",
-        role: "Principal Market Analyst",
-        image: "/api/placeholder/40/40",
-        department: "Market Research",
-        credentials: [
-          "Ph.D. Industrial Chemistry, ETH Zurich",
-          "MBA, London Business School"
-        ],
-        expertise: ["Specialty Chemicals", "Market Analysis", "Product Strategy"],
-        publications: 31,
-        industryExperience: 15
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Specialty Chemicals",
-        "Market Analysis",
-        "Growth Opportunities",
-        "Product Strategy"
-      ],
-      category: "Market Research",
-      downloadUrl: "/reports/specialty-chemicals-2024.pdf",
-      readTime: "3.5 hours",
-      highlights: [
-        "Analysis of 25 high-growth segments",
-        "Regional market opportunity assessment",
-        "Competitive landscape analysis",
-        "Technology adoption trends",
-        "End-user industry demand analysis"
-      ],
-      stats: {
-        views: 19567,
-        downloads: 4123,
-        likes: 934,
-        shares: 567,
-        citations: 178,
-        comments: 245
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 356,
-        lastUpdated: "2024-03-15",
-        version: "2.3",
-        language: "English",
-        fileSize: "31.2 MB",
-        tables: 62,
-        figures: 84,
-        references: 245
-      },
-      status: "trending",
-      access: "premium"
-    },
-    'report-6': {
-      id: "green-chemistry-innovation",
-      title: "Innovations in Green Chemistry 2024: Sustainable Solutions & Circular Economy",
-      excerpt: "Comprehensive analysis of breakthrough innovations in green chemistry, featuring novel synthesis routes, bio-based alternatives, and circular economy implementations. Includes technology readiness assessments and commercialization roadmaps.",
-      date: "2024-03-20",
-      author: {
-        id: "auth-006",
-        name: "Dr. David Lee",
-        role: "Head of Green Chemistry Research",
-        image: "/api/placeholder/40/40",
-        department: "Environmental",
-        credentials: [
-          "Ph.D. Green Chemistry, Yale University",
-          "Green Chemistry Design Award Winner"
-        ],
-        expertise: ["Sustainable Synthesis", "Circular Economy", "Bio-based Materials"],
-        publications: 45,
-        patents: 8
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Green Chemistry",
-        "Sustainability",
-        "Circular Economy",
-        "Bio-based Materials"
-      ],
-      category: "Environmental",
-      downloadUrl: "/reports/green-chemistry-innovation-2024.pdf",
-      readTime: "4 hours",
-      highlights: [
-        "50+ innovative green chemistry solutions",
-        "Circular economy implementation cases",
-        "Bio-based materials development",
-        "Commercial viability assessment",
-        "Patent landscape analysis"
-      ],
-      stats: {
-        views: 16789,
-        downloads: 3567,
-        likes: 878,
-        shares: 445,
-        citations: 189,
-        comments: 167
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 389,
-        lastUpdated: "2024-03-25",
-        version: "2.2",
-        language: "English",
-        fileSize: "33.5 MB",
-        tables: 58,
-        figures: 92,
-        references: 267,
-        patentCitations: 145
-      },
-      status: "featured",
-      access: "premium"
-    },
-    'report-7': {
-      id: "advanced-materials-2024",
-      title: "Advanced Materials & Nanotechnology in Chemical Industry 2024-2030",
-      excerpt: "Strategic analysis of advanced materials market opportunities, featuring emerging applications in nanomaterials, smart polymers, and composites. Includes technical feasibility studies, commercialization pathways, and patent analysis of 1,200+ innovations.",
-      date: "2024-04-01",
-      author: {
-        id: "auth-007",
-        name: "Dr. Elena Rodriguez",
-        role: "Principal Materials Scientist",
-        image: "/api/placeholder/40/40",
-        department: "Advanced Materials",
-        credentials: [
-          "Ph.D. Materials Science, University of Cambridge",
-          "MSc Nanotechnology, Imperial College London"
-        ],
-        expertise: ["Nanomaterials", "Smart Polymers", "Material Characterization"],
-        publications: 52,
-        patents: 11,
-        researchGrants: "$8.5M+"
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Advanced Materials",
-        "Nanotechnology",
-        "Smart Polymers",
-        "Composites"
-      ],
-      category: "R&D",
-      downloadUrl: "/reports/advanced-materials-2024.pdf",
-      readTime: "4.5 hours",
-      highlights: [
-        "Analysis of 200+ emerging materials",
-        "Patent landscape analysis",
-        "Application-specific market sizing",
-        "Technical feasibility studies",
-        "Commercialization roadmaps"
-      ],
-      stats: {
-        views: 17845,
-        downloads: 3892,
-        likes: 945,
-        shares: 534,
-        citations: 223,
-        comments: 178
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 412,
-        lastUpdated: "2024-04-05",
-        version: "2.4",
-        language: "English",
-        fileSize: "38.7 MB",
-        tables: 73,
-        figures: 98,
-        references: 289,
-        patentCitations: 167
-      },
-      status: "trending",
-      access: "enterprise",
-      pricing: {
-        standard: 5499,
-        enterprise: 13999,
-        academic: 1899
-      }
-    },
-    'report-8': {
-      id: "supply-chain-optimization",
-      title: "Chemical Industry Supply Chain Optimization 2024: Digital Integration & Resilience",
-      excerpt: "Comprehensive guide to modern chemical supply chain management, featuring digital twin implementations, blockchain integration, and resilience strategies. Includes 25 detailed case studies from leading chemical companies.",
-      date: "2024-04-15",
-      author: {
-        id: "auth-008",
-        name: "Dr. Marcus Chen",
-        role: "Global Supply Chain Director",
-        image: "/api/placeholder/40/40",
-        department: "Supply Chain",
-        credentials: [
-          "Ph.D. Operations Research, Georgia Tech",
-          "Six Sigma Black Belt",
-          "CSCP Certified"
-        ],
-        expertise: ["Supply Chain Optimization", "Digital Integration", "Risk Management"],
-        implementations: 15,
-        industryAwards: 3
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Supply Chain",
-        "Digital Integration",
-        "Risk Management",
-        "Blockchain"
-      ],
-      category: "Operations",
-      downloadUrl: "/reports/supply-chain-optimization-2024.pdf",
-      readTime: "3.5 hours",
-      highlights: [
-        "Digital twin implementation frameworks",
-        "Blockchain integration strategies",
-        "Risk mitigation methodologies",
-        "Real-time optimization tools",
-        "Cost reduction case studies"
-      ],
-      stats: {
-        views: 16234,
-        downloads: 3567,
-        likes: 856,
-        shares: 478,
-        citations: 167,
-        comments: 198
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 345,
-        lastUpdated: "2024-04-20",
-        version: "2.1",
-        language: "English",
-        fileSize: "29.5 MB",
-        tables: 56,
-        figures: 82,
-        references: 234,
-        caseStudies: 25
-      },
-      status: "featured",
-      access: "premium"
-    },
-    'report-9': {
-      id: "plant-safety-2024",
-      title: "Chemical Plant Safety & Risk Management 2024: Best Practices & Digital Solutions",
-      excerpt: "Essential guide to chemical plant safety featuring AI-powered risk prediction, IoT safety monitoring systems, and emergency response protocols. Includes analysis of 150 incident case studies and preventive strategies.",
-      date: "2024-04-20",
-      author: {
-        id: "auth-009",
-        name: "Dr. Robert Williams",
-        role: "Head of Process Safety",
-        image: "/api/placeholder/40/40",
-        department: "Safety",
-        credentials: [
-          "Ph.D. Process Safety, Texas A&M",
-          "CSP Certified",
-          "NEBOSH International Diploma"
-        ],
-        expertise: ["Process Safety", "Risk Assessment", "Emergency Response"],
-        investigations: 75,
-        safetyPrograms: 30
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Plant Safety",
-        "Risk Management",
-        "Emergency Response",
-        "Digital Safety"
-      ],
-      category: "Safety",
-      downloadUrl: "/reports/plant-safety-2024.pdf",
-      readTime: "5 hours",
-      highlights: [
-        "AI-based risk prediction models",
-        "IoT safety monitoring systems",
-        "Emergency response protocols",
-        "Incident investigation methodologies",
-        "Safety culture development"
-      ],
-      stats: {
-        views: 22456,
-        downloads: 5678,
-        likes: 1234,
-        shares: 789,
-        citations: 234,
-        comments: 345
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 467,
-        lastUpdated: "2024-04-25",
-        version: "3.2",
-        language: "English",
-        fileSize: "41.2 MB",
-        tables: 85,
-        figures: 112,
-        references: 278,
-        caseStudies: 150
-      },
-      status: "trending",
-      access: "enterprise"
-    },
-    'report-10': {
-      id: "pharma-chemicals-2024",
-      title: "Pharmaceutical Chemicals Market Analysis 2024-2030: Innovation & Growth Opportunities",
-      excerpt: "Strategic analysis of the $180+ billion pharmaceutical chemicals market, featuring segment-wise projections, regulatory compliance frameworks, and emerging therapy areas. Includes analysis of 300+ APIs and intermediates.",
-      date: "2024-05-01",
-      author: {
-        id: "auth-010",
-        name: "Dr. Sarah Anderson",
-        role: "Pharmaceutical Industry Analyst",
-        image: "/api/placeholder/40/40",
-        department: "Market Research",
-        credentials: [
-          "Ph.D. Medicinal Chemistry, Stanford",
-          "MBA, INSEAD",
-          "RAC-Global Certified"
-        ],
-        expertise: ["Pharma Markets", "Drug Development", "Regulatory Strategy"],
-        publications: 38,
-        marketReports: 45
-      },
-      image: "/api/placeholder/600/400",
-      tags: [
-        "Pharmaceutical",
-        "APIs",
-        "Drug Development",
-        "Market Analysis"
-      ],
-      category: "Market Research",
-      downloadUrl: "/reports/pharma-chemicals-2024.pdf",
-      readTime: "4.5 hours",
-      highlights: [
-        "Analysis of 300+ APIs & intermediates",
-        "Regulatory compliance frameworks",
-        "Emerging therapy areas analysis",
-        "Cost optimization strategies",
-        "Supply chain security measures"
-      ],
-      stats: {
-        views: 19876,
-        downloads: 4567,
-        likes: 1123,
-        shares: 678,
-        citations: 245,
-        comments: 189
-      },
-      metadata: {
-        fileFormat: "PDF",
-        pageCount: 434,
-        lastUpdated: "2024-05-05",
-        version: "2.3",
-        language: "English",
-        fileSize: "37.8 MB",
-        tables: 78,
-        figures: 95,
-        references: 267,
-        marketModels: 45
-      },
-      status: "featured",
-      access: "premium"
-    },
-  'report-11': {
-    id: "battery-materials-2024",
-    title: "Battery Materials Market 2024-2030: Next-Generation Chemistry & Manufacturing Innovation",
-    excerpt: "Strategic analysis of the $45B+ battery materials market, featuring detailed assessments of advanced cathode/anode materials, solid-state electrolytes, and manufacturing innovations. Includes technical evaluations of emerging battery chemistries and supply chain analysis.",
-    date: "2024-05-10",
-    author: {
-      id: "auth-011",
-      name: "Dr. James Park",
-      role: "Senior Battery Technology Analyst",
-      image: "/api/placeholder/40/40",
-      department: "Energy Materials",
-      credentials: [
-        "Ph.D. Materials Science, MIT",
-        "MS Electrochemistry, Seoul National University"
-      ],
-      expertise: ["Battery Materials", "Energy Storage", "Manufacturing Processes"],
-      publications: 43,
-      patents: 7,
-      industryCollaborations: 12
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Battery Materials",
-      "Energy Storage",
-      "Manufacturing",
-      "Supply Chain"
-    ],
-    category: "Energy",
-    downloadUrl: "/reports/battery-materials-2024.pdf",
-    readTime: "4 hours",
-    highlights: [
-      "Analysis of next-gen battery chemistries",
-      "Manufacturing cost optimization",
-      "Supply chain resilience strategies",
-      "Performance benchmarking studies",
-      "Sustainability assessments"
-    ],
-    stats: {
-      views: 18934,
-      downloads: 4123,
-      likes: 967,
-      shares: 534,
-      citations: 189,
-      comments: 156
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 389,
-      lastUpdated: "2024-05-15",
-      version: "2.4",
-      language: "English",
-      fileSize: "35.6 MB",
-      tables: 64,
-      figures: 92,
-      references: 245,
-      technicalDiagrams: 38
-    },
-    status: "trending",
-    access: "enterprise",
-    pricing: {
-      standard: 5999,
-      enterprise: 14999,
-      academic: 1999
-    }
-  },
-  'report-12': {
-    id: "water-treatment-2024",
-    title: "Industrial Water Treatment Chemicals 2024: Innovation in Sustainability & Efficiency",
-    excerpt: "Comprehensive analysis of the $35B water treatment chemicals market, featuring emerging treatment technologies, regulatory compliance strategies, and sustainability initiatives. Includes case studies from 50 major industrial installations.",
-    date: "2024-05-15",
-    author: {
-      id: "auth-012",
-      name: "Dr. Lisa Martinez",
-      role: "Water Technology Specialist",
-      image: "/api/placeholder/40/40",
-      department: "Environmental Solutions",
-      credentials: [
-        "Ph.D. Environmental Engineering, UC Berkeley",
-        "Professional Environmental Engineer",
-        "Water Treatment Specialist Certification"
-      ],
-      expertise: ["Water Treatment", "Process Optimization", "Environmental Compliance"],
-      implementations: 25,
-      publications: 31
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Water Treatment",
-      "Sustainability",
-      "Process Optimization",
-      "Environmental"
-    ],
-    category: "Environmental",
-    downloadUrl: "/reports/water-treatment-2024.pdf",
-    readTime: "3.5 hours",
-    highlights: [
-      "Advanced treatment technology analysis",
-      "Regulatory compliance frameworks",
-      "Sustainability metrics & benchmarks",
-      "Cost optimization strategies",
-      "Implementation case studies"
-    ],
-    stats: {
-      views: 15678,
-      downloads: 3456,
-      likes: 789,
-      shares: 445,
-      citations: 167,
-      comments: 198
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 356,
-      lastUpdated: "2024-05-20",
-      version: "2.2",
-      language: "English",
-      fileSize: "31.2 MB",
-      tables: 58,
-      figures: 75,
-      references: 223,
-      caseStudies: 50
-    },
-    status: "featured",
-    access: "premium"
-  },
-  'report-13': {
-    id: "electronic-chemicals-2024",
-    title: "Electronic Chemicals & Semiconductor Materials 2024-2030: Next-Gen Manufacturing & Supply Chain Security",
-    excerpt: "Strategic analysis of the $65B electronic chemicals market, featuring ultra-high purity materials, advanced manufacturing processes, and supply chain security measures. Includes detailed analysis of emerging semiconductor technologies.",
-    date: "2024-06-01",
-    author: {
-      id: "auth-013",
-      name: "Dr. Kevin Zhang",
-      role: "Principal Semiconductor Analyst",
-      image: "/api/placeholder/40/40",
-      department: "Electronic Materials",
-      credentials: [
-        "Ph.D. Chemical Engineering, Stanford",
-        "MS Semiconductor Physics, Tsinghua University"
-      ],
-      expertise: ["Semiconductor Materials", "High-Purity Chemistry", "Process Integration"],
-      publications: 47,
-      patents: 9,
-      industryAwards: 3
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Electronic Chemicals",
-      "Semiconductors",
-      "High-Purity Materials",
-      "Manufacturing"
-    ],
-    category: "Electronics",
-    downloadUrl: "/reports/electronic-chemicals-2024.pdf",
-    readTime: "4.5 hours",
-    highlights: [
-      "Ultra-high purity material analysis",
-      "Advanced process technologies",
-      "Supply chain security strategies",
-      "Contamination control methods",
-      "Cost optimization frameworks"
-    ],
-    stats: {
-      views: 17845,
-      downloads: 3987,
-      likes: 876,
-      shares: 534,
-      citations: 198,
-      comments: 167
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 412,
-      lastUpdated: "2024-06-05",
-      version: "2.3",
-      language: "English",
-      fileSize: "36.8 MB",
-      tables: 67,
-      figures: 89,
-      references: 256,
-      technicalDiagrams: 45
-    },
-    status: "trending",
-    access: "enterprise"
-  },
-  'report-14': {
-    id: "agrochem-2024",
-    title: "Agricultural Chemicals & Food Security 2024: Sustainable Solutions & Market Dynamics",
-    excerpt: "Comprehensive analysis of the $250B agricultural chemicals market, featuring sustainable crop protection solutions, precision agriculture technologies, and food security strategies. Includes regional market analysis and regulatory frameworks.",
-    date: "2024-06-10",
-    author: {
-      id: "auth-014",
-      name: "Dr. Thomas Anderson",
-      role: "Head of Agrochemical Research",
-      image: "/api/placeholder/40/40",
-      department: "Agricultural Solutions",
-      credentials: [
-        "Ph.D. Agricultural Chemistry, Wageningen University",
-        "MS Crop Science, Cornell University"
-      ],
-      expertise: ["Crop Protection", "Sustainable Agriculture", "Food Security"],
-      publications: 35,
-      fieldTrials: 200,
-      patents: 5
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Agricultural Chemicals",
-      "Food Security",
-      "Sustainability",
-      "Crop Protection"
-    ],
-    category: "Agriculture",
-    downloadUrl: "/reports/agricultural-chemicals-2024.pdf",
-    readTime: "4 hours",
-    highlights: [
-      "Sustainable agriculture solutions",
-      "Precision farming technologies",
-      "Regional market analysis",
-      "Regulatory compliance frameworks",
-      "Environmental impact assessments"
-    ],
-    stats: {
-      views: 16789,
-      downloads: 3678,
-      likes: 845,
-      shares: 467,
-      citations: 178,
-      comments: 156
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 378,
-      lastUpdated: "2024-06-15",
-      version: "2.2",
-      language: "English",
-      fileSize: "33.5 MB",
-      tables: 62,
-      figures: 85,
-      references: 234,
-      caseStudies: 40
-    },
-    status: "featured",
-    access: "premium"
-  },
-  'report-15': {
-    id: "ma-chemicals-2024",
-    title: "Chemical Industry M&A Landscape 2024: Strategic Analysis & Deal-Making Trends",
-    excerpt: "Strategic analysis of global chemical industry M&A activities, featuring deal valuations, integration strategies, and market consolidation trends. Includes detailed analysis of 100+ major transactions and future outlook.",
-    date: "2024-06-15",
-    author: {
-      id: "auth-015",
-      name: "Dr. Michael Thompson",
-      role: "Chief Industry Strategist",
-      image: "/api/placeholder/40/40",
-      department: "Strategic Research",
-      credentials: [
-        "Ph.D. Economics, London School of Economics",
-        "MBA, Harvard Business School",
-        "CFA Charterholder"
-      ],
-      expertise: ["M&A Strategy", "Industry Consolidation", "Value Creation"],
-      transactions: "$50B+",
-      publications: 28
-    },
-    image: "/api/placeholder/600/400",
-    tags: [
-      "Mergers & Acquisitions",
-      "Industry Strategy",
-      "Deal Analysis",
-      "Market Consolidation"
-    ],
-    category: "Strategy",
-    downloadUrl: "/reports/chemical-ma-2024.pdf",
-    readTime: "3.5 hours",
-    highlights: [
-      "Global M&A trend analysis",
-      "Deal valuation frameworks",
-      "Integration strategy assessment",
-      "Synergy realization cases",
-      "Regional market dynamics"
-    ],
-    stats: {
-      views: 15678,
-      downloads: 3456,
-      likes: 767,
-      shares: 423,
-      citations: 156,
-      comments: 189
-    },
-    metadata: {
-      fileFormat: "PDF",
-      pageCount: 345,
-      lastUpdated: "2024-06-20",
-      version: "2.1",
-      language: "English",
-      fileSize: "29.8 MB",
-      tables: 54,
-      figures: 78,
-      references: 212,
-      dealAnalyses: 100
-    },
-    status: "new",
-    access: "enterprise",
-    pricing: {
-      standard: 4999,
-      enterprise: 12999,
-      academic: 1499
-    }
-  }
-};
 
 export default function ReportsPage() {
   const [selectedTag, setSelectedTag] = useState("All Reports");
@@ -1058,16 +96,27 @@ export default function ReportsPage() {
   const [starredReports, setStarredReports] = useState<Set<string | number>>(new Set());
   const [showMetadata, setShowMetadata] = useState<string | number | null>(null);
 
+  // Replace reportArticles with reports
+  const [reports, setReports] = useState<Report[]>([]);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const fetchReports = async () => {
+      try {
+        const data = await reportService.getReports(); // Fetch reports from Supabase
+        setReports(data);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReports();
   }, []);
 
-  const filteredReports = Object.values(reportArticles).filter(report => {
+  const filteredReports = reports.filter(report => {
     const matchesTag = selectedTag === "All Reports" || 
-                      report.tags.includes(selectedTag) || 
+                      (Array.isArray(report.tags) && report.tags.includes(selectedTag)) || 
                       report.category === selectedTag;
     const matchesSearch = !searchTerm || 
                          report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -1122,13 +171,18 @@ export default function ReportsPage() {
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
-  // Add these handlers to your component
-  const handleBookmark = (report: Report) => {
-    setBookmarkedReports(prev => {
-      const newBookmarks = new Set(prev);
-      newBookmarks.has(report.id) ? newBookmarks.delete(report.id) : newBookmarks.add(report.id);
-      return newBookmarks;
-    });
+  // Add this handler to your component
+  const handleBookmark = async (report: Report) => {
+    try {
+      await reportService.toggleBookmark('current-user-id', report.id); // Toggle bookmark in the database
+      setBookmarkedReports(prev => {
+        const newBookmarks = new Set(prev);
+        newBookmarks.has(report.id) ? newBookmarks.delete(report.id) : newBookmarks.add(report.id);
+        return newBookmarks;
+      });
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+    }
   };
 
   const handleLike = (report: Report) => {
@@ -1214,28 +268,108 @@ export default function ReportsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <div className="relative bg-[rgb(106,27,154)] text-white py-20 px-4">
-        <div className="absolute inset-0 bg-[url('/api/placeholder/1920/400')] opacity-10"></div>
-        <div className="container mx-auto relative z-10">
-          <motion.h1 
-            className="text-5xl font-bold mb-4 text-center"
+      <div className="relative min-h-[400px] font-['Inter'] antialiased">
+      {/* Background with gradient overlay */}
+      <div 
+        className="absolute inset-0 bg-[url('/api/placeholder/1920/400')] bg-cover bg-center"
+        style={{ backgroundImage: `${gradientOverlay}, url('/api/placeholder/1920/400')` }}
+      />
+      
+      {/* Content Container */}
+      <div className="relative z-10 max-w-4xl mx-auto">
+        {/* Decorative Elements */}
+        <motion.div 
+          className="w-16 h-1 bg-white mx-auto mb-8"
+          initial={{ width: 0 }}
+          animate={{ width: 64 }}
+          transition={{ duration: 0.6 }}
+        />
+
+        {/* Main Content */}
+        <div className="text-center">
+          <motion.h1
+            className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 
+                       tracking-tight leading-tight"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ 
+              duration: 0.5,
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
             Industry Reports & Insights
           </motion.h1>
-          <motion.p 
-            className="text-xl text-center max-w-2xl mx-auto"
+
+          <motion.p
+            className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8
+                       leading-relaxed font-light"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ 
+              duration: 0.5,
+              delay: 0.2,
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
-            Dive into a treasure trove of insights and analyses that illuminate the dynamic landscape of the chemical industry, 
-            revealing groundbreaking trends and untapped market opportunities.
+            Explore key trends and opportunities in the chemical industry through 
+            our comprehensive analyses and expert insights.
           </motion.p>
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ 
+              duration: 0.5,
+              delay: 0.4,
+              ease: [0.4, 0, 0.2, 1]
+            }}
+          >
+            <button className="group bg-white text-purple-800 px-6 py-3 rounded-full
+                             font-medium transition-all duration-300
+                             hover:bg-purple-50 hover:shadow-lg
+                             active:shadow-md active:transform active:translate-y-0.5
+                             focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2
+                             focus:ring-offset-purple-800">
+              <span className="flex items-center space-x-2">
+                <span>View Latest Reports</span>
+                <ArrowRight className="w-4 h-4 transform transition-transform 
+                                     group-hover:translate-x-1" />
+              </span>
+            </button>
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ 
+              duration: 0.5,
+              delay: 0.6,
+              ease: [0.4, 0, 0.2, 1]
+            }}
+          >
+            <ChevronDown className="w-6 h-6 text-white/70 animate-bounce" />
+          </motion.div>
         </div>
       </div>
+
+      {/* Optional: Decorative Bottom Wave */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg 
+          viewBox="0 0 1440 100" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-auto transform translate-y-1"
+        >
+          <path 
+            d="M0 50L48 45.7C96 41.3 192 32.7 288 29.2C384 25.7 480 27.3 576 35.8C672 44.3 768 59.7 864 64.2C960 68.7 1056 62.3 1152 55.8C1248 49.3 1344 42.7 1392 39.3L1440 36V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z" 
+            fill="white"
+          />
+        </svg>
+      </div>
+    </div>
 
       <div className="container mx-auto px-4 py-12">
         {/* Search and Filters */}
@@ -1273,21 +407,18 @@ export default function ReportsPage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredReports.map((report) => (
             <motion.div
               key={report.id}
               variants={itemVariants}
-              className="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
-            >
+              className="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
                   src={report.image}
                   alt={report.title}
                   fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"/>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
               </div>
 
@@ -1313,7 +444,11 @@ export default function ReportsPage() {
                 </p>
 
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-gray-600">{report.author.name}</span>
+                  {report.author ? (
+                    <span className="text-sm text-gray-600">{report.author.name}</span>
+                  ) : (
+                    <span className="text-sm text-gray-600">Unknown Author</span>
+                  )}
                   <span className="text-sm text-gray-500">
                     {new Date(report.date).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -1324,17 +459,17 @@ export default function ReportsPage() {
                 </div>
 
                 <div className="space-y-4">
-                  {/* Primary Actions */}
+                  {/* Primary Actions  or Raw 1 and column 1 */}
                   <div className="flex gap-2 items-center">
                     <Link href={`/insights/report/${report.id}`} className="flex-1">
-                      <button className="w-full px-3 py-2 bg-[rgb(106,27,154)] text-white rounded-full text-sm font-medium hover:bg-[rgb(86,7,134)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                      <button className="w-auto px-2 py-1 bg-[rgb(106,27,154)] text-white rounded-full text-sm font-medium hover:bg-[rgb(86,7,134)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                         <FileText className="h-4 w-4" />
                         Read Report {/* Button to navigate to the report detail page */}
                       </button>
                     </Link>
                     
                     <div className="flex gap-1">
-                      {/* Quick Actions */}
+                      {/* Quick Actions, Raw 1 and column 2 */}
                       <button 
                         onClick={() => handleBookmark(report)}
                         className={`p-2 rounded-full transition-all duration-300 ${
@@ -1366,7 +501,7 @@ export default function ReportsPage() {
                         className={`p-2 rounded-full transition-all duration-300 ${
                           starredReports.has(report.id) 
                             ? 'text-orange-500 bg-orange-50' 
-                            : 'text-gray-400 hover:bg-gray-50'
+                            : 'text-gray-400 hover:bg-gray-500'
                         }`}
                         title="Star Report"
                       >
@@ -1378,12 +513,11 @@ export default function ReportsPage() {
 
                   {/* Secondary Actions */}
                   <div className="flex flex-wrap gap-2 justify-between">
-                    <div className="flex gap-1">
+                    <div className="flex gap-1">     
                       <button 
                         onClick={() => handleEmail(report)}
                         className="p-2 text-[rgb(106,27,154)] hover:bg-purple-50 rounded-full transition-all duration-300 tooltip"
-                        title="Email Report"
-                      >
+                        title="Email Report">
                         <Mail className="h-5 w-5" />
                         {/* Button to email the report */}
                       </button>
@@ -1416,9 +550,12 @@ export default function ReportsPage() {
                           {/* Button to download the report as a PDF */}
                         </button>
                       )}
+                      
+
+
                     </div>
 
-                    <div className="flex gap-1">
+                    <div className="flex gap-1">     
                       <button 
                         onClick={() => handleLike(report)}
                         className={`p-2 rounded-full transition-all duration-300 tooltip ${
@@ -1429,7 +566,9 @@ export default function ReportsPage() {
                         title="Like Report"
                       >
                         <ThumbsUp className="h-5 w-5" />
-                        <span className="text-xs ml-1">{report.stats.likes}</span>
+                        <span className="text-xs ml-1">
+                          {report.stats ? report.stats.likes : 0}
+                        </span>
                         {/* Button to like the report */}
                       </button>
 
@@ -1486,22 +625,22 @@ export default function ReportsPage() {
                     <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <span className="font-medium">Format:</span> {report.metadata.fileFormat}
+                          <span className="font-medium">Format:</span> {report.metadata?.fileFormat || 'N/A'}
                         </div>
                         <div>
-                          <span className="font-medium">Size:</span> {report.metadata.fileSize}
+                          <span className="font-medium">Size:</span> {report.metadata?.fileSize || 'N/A'}
                         </div>
                         <div>
-                          <span className="font-medium">Pages:</span> {report.metadata.pageCount}
+                          <span className="font-medium">Pages:</span> {report.metadata?.pageCount || 'N/A'}
                         </div>
                         <div>
-                          <span className="font-medium">Version:</span> {report.metadata.version}
+                          <span className="font-medium">Version:</span> {report.metadata?.version || 'N/A'}
                         </div>
                         <div>
-                          <span className="font-medium">Last Updated:</span> {report.metadata.lastUpdated}
+                          <span className="font-medium">Last Updated:</span> {report.metadata?.lastUpdated || 'N/A'}
                         </div>
                         <div>
-                          <span className="font-medium">Language:</span> {report.metadata.language}
+                          <span className="font-medium">Language:</span> {report.metadata?.language || 'N/A'}
                         </div>
                       </div>
                       
@@ -1509,13 +648,13 @@ export default function ReportsPage() {
                         <span className="font-medium">Stats:</span>
                         <div className="flex gap-4 mt-2">
                           <span className="flex items-center gap-1">
-                            <Eye className="h-4 w-4" /> {report.stats.views}
+                            <Eye className="h-4 w-4" /> {report.stats?.views || 0}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Download className="h-4 w-4" /> {report.stats.downloads}
+                            <Download className="h-4 w-4" /> {report.stats?.downloads || 0}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Share2 className="h-4 w-4" /> {report.stats.shares}
+                            <Share2 className="h-4 w-4" /> {report.stats?.shares || 0}
                           </span>
                         </div>
                       </div>
