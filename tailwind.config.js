@@ -22,6 +22,20 @@ const config = {
         warning: '#ff9800',   // Warm Yellow/Orange
         error: '#f44336',     // Rich Red
       },
+      keyframes: {
+        'bounce-subtle': {
+          '0%, 100%': { transform: 'translateY(-5%)' },
+          '50%': { transform: 'translateY(0)' },
+        },
+        'like': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.2)' },
+        }
+      },
+      animation: {
+        'bounce-subtle': 'bounce-subtle 2s infinite',
+        'like': 'like 0.3s ease-in-out',
+      },
     },
   },
   plugins: [require('daisyui'),require("tailwindcss-animate")],
