@@ -5,6 +5,17 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { blogArticles } from '@/data/blogArticles';
+// import BlogArticle from '@/components/BlogArticle';
+
+// Add type definitions for blog post
+interface BlogPost {
+  title: string;
+  image: string;
+  excerpt: string;
+  tags: string[];
+  date: string;
+  author: string;
+}
 
 const tags = [
   "All Blogs",
@@ -26,9 +37,9 @@ const tags = [
 ];
 
 export default function BlogsPage() {
-  const [selectedTag, setSelectedTag] = useState("All Blogs");
+  const [selectedTag, setSelectedTag] = useState<string>("All Blogs");
 
-  const filteredBlogArticles = Object.entries(blogArticles).filter(([_, post]) => 
+  const filteredBlogArticles = Object.entries(blogArticles).filter(([_, post]: [string, BlogPost]) => 
     selectedTag === "All Blogs" || post.tags.includes(selectedTag)
   );
 
