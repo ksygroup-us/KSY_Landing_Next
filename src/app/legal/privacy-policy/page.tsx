@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
       <div className="space-y-6">
         <section>
           <h2 className="text-xl font-semibold mb-4">1. Information We Collect</h2>
-          <p>We collect information that you provide directly to us, including:</p>
+          <p>KSY Group LLC collects information that you provide directly to us, including:</p>
           <ul className="list-disc pl-6 mt-2">
             <li>Contact information (name, email address, phone number)</li>
             <li>Company information</li>
@@ -29,13 +29,17 @@ export default function PrivacyPolicy() {
 
         <section>
           <h2 className="text-xl font-semibold mb-4">3. Information Security</h2>
-          <p>We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.</p>
+          <p>KSY Group LLC implements appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.</p>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold mb-4">4. Contact Us</h2>
-          <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-          <p className="mt-2">Email: privacy@company.com</p>
+          <p>If you have any questions about this Privacy Policy, please contact us:</p>
+          <p className="mt-2">KSY Group LLC</p>
+          <p>PO Box 76180</p>
+          <p>Fort Worth, Texas</p>
+          <p>Email: privacy@ksygroup.us</p>
+          <p>Phone: (669) 295-3313</p>
         </section>
       </div>
     </LegalLayout>
