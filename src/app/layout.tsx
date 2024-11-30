@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
 import Script from 'next/script';
 import '../styles/globals.css';
+import BackgroundGradient from '@/components/BackgroundGradient';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-roboto' });
 const merriweather = Merriweather({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-merriweather' });
@@ -36,6 +37,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="font-sans text-gray-800">
+        <BackgroundGradient />
         <Header />
         <div className="pt-[calc(64px+2rem)] md:pt-[calc(80px+2rem)] lg:pt-[calc(96px+2rem)]">
           <main>{children}</main>

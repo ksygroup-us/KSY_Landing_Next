@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { supabase } from '@/lib/utils/supabaseClient'; 
-
+import { supabase } from '@/lib/utils/supabaseClient';
 
 interface NewsletterSignupProps {
   handleSubscribe: (email: string) => Promise<void>;
@@ -20,179 +19,127 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ handleSubscribe }) 
     setSubscriptionStatus('idle');
 
     try {
-      // Check if email already exists
       const { data: existingSubscriptions, error: checkError } = await supabase
         .from('newsletter_subscriptions')
         .select('email')
         .eq('email', email);
 
-      if (checkError) {
-        console.error('Error checking existing subscription:', checkError);
-        throw checkError;
-      }
+      if (checkError) throw checkError;
 
-      if (existingSubscriptions && existingSubscriptions.length > 0) {
+      if (existingSubscriptions?.length > 0) {
         setSubscriptionStatus('already_subscribed');
         return;
       }
 
-      // Insert email into Supabase table
       const { error: insertError } = await supabase
         .from('newsletter_subscriptions')
         .insert([{ email }]);
 
-      if (insertError) {
-        console.error('Error inserting subscription:', insertError);
-        throw insertError;
-      }
+      if (insertError) throw insertError;
 
-      // Send thank you email using Resend
-      try {
-        await handleSubscribe(email);
-      } catch (subscribeError) {
-        console.error('Error in handleSubscribe:', subscribeError);
-        // Continue execution even if email sending fails
-      }
-
-      // Call the API route to send email
+      await handleSubscribe(email);
+      
       const response = await fetch('/api/send-newsletter-welcome', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response from API:', errorData);
-        throw new Error(`Failed to send email: ${errorData.error || 'Unknown error'}`);
-      }
+      if (!response.ok) throw new Error('Failed to send welcome email');
 
       setSubscriptionStatus('success');
       setEmail('');
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error:', error);
       setSubscriptionStatus('error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const buttonVariants = {
-    idle: { scale: 1 },
-    hover: { scale: 1.05 },
-    tap: { scale: 0.95 },
-    loading: { 
-      scale: 1,
-      boxShadow: "0 0 0 0 rgba(147, 51, 234, 1)",
-      transition: {
-        duration: 1,
-        repeat: Infinity,
-        repeatType: "reverse" as const
-      }
-    }
-  };
-
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-base-200 py-5 md:py-10">
-      <div className="container mx-auto px-4">
-        <motion.h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-3xl font-bold mb-1 text-center text-black"
-        >
-          Subscribe to our newsletter
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-xl mb-8 text-center text-gray-700"
-        >
-          Stay ahead with cutting-edge chemical industry updates and exclusive offers.
-        </motion.p>
+    <section className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
 
-        <AnimatePresence mode="wait">
-          {subscriptionStatus === 'success' ? (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="alert alert-success"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>Welcome aboard! Check your email for a special welcome package.</span>
-            </motion.div>
-          ) : subscriptionStatus === 'error' ? (
-            <motion.div
-              key="error"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="alert alert-error"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>Oops! A little hiccup occurred. Please try again or reach out to our support team.</span>
-            </motion.div>
-          ) : subscriptionStatus === 'already_subscribed' ? (
-            <motion.div
-              key="already_subscribed"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="alert alert-warning"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-              <span>You're already subscribed! We appreciate your enthusiasm.</span>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="card bg-base-100 shadow-xl max-w-md mx-auto"
-            >
-              <div className="card-body">
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <motion.div
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: 50, opacity: 0 }}
-                  >
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
-                      className="input input-bordered w-full"
-                      required
-                    />
-                  </motion.div>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+          >
+            Stay Connected
+          </motion.h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="w-24 h-1 bg-primary mx-auto mb-6"
+          />
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            Stay ahead with cutting-edge chemical industry updates and exclusive offers
+          </motion.p>
+        </div>
 
+        <div className="max-w-md mx-auto">
+          <AnimatePresence mode="wait">
+            {subscriptionStatus !== 'idle' ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className={`p-4 rounded-lg shadow-lg ${
+                  subscriptionStatus === 'success' ? 'bg-green-100 text-green-800' :
+                  subscriptionStatus === 'error' ? 'bg-red-100 text-red-800' :
+                  'bg-yellow-100 text-yellow-800'
+                }`}
+              >
+                {subscriptionStatus === 'success' && "Welcome aboard! Check your email for a special welcome package."}
+                {subscriptionStatus === 'error' && "Oops! Something went wrong. Please try again."}
+                {subscriptionStatus === 'already_subscribed' && "You're already subscribed! We appreciate your enthusiasm."}
+              </motion.div>
+            ) : (
+              <motion.form
+                onSubmit={handleSubmit}
+                className="bg-white rounded-2xl shadow-lg p-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <div className="flex gap-4">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    required
+                  />
                   <Button
                     type="submit"
-                    variant="default"
-                    size="default"
-                    className="w-full"
                     disabled={isLoading}
+                    className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3"
                   >
                     {isLoading ? 'Subscribing...' : 'Subscribe'}
                   </Button>
-                </form>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

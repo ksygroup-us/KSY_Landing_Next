@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-// import PrivacyPolicy from '@/components/PrivacyPolicy';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const productCategories = [
   "Organic Chemicals",
@@ -15,64 +15,112 @@ const productCategories = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-primary-content p-10">
-      <div className="footer container mx-auto flex flex-col md:flex-row justify-between">
-        <div className="flex-1">
-          <span className="footer-title">KSY Group LLC</span>
-          <p className="max-w-xs mt-2">Your trusted partner in chemical distribution, providing innovative solutions and quality products to meet your industry needs.</p>
-        </div>
-        <div className="flex-1">
-          <span className="footer-title">Products</span>
-          <ul className="mt-2">
-            {productCategories.map((category, index) => (
-              <li key={index} className="mb-2">
-                <Link href={`/products/${category.toLowerCase().replace(/\s+/g, '-')}`} className="link link-hover">
-                  {category}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex-1">
-          <span className="footer-title">Company</span>
-          <Link href="/" className="link link-hover">Home</Link>
-          <Link href="/about" className="link link-hover">About us</Link>
-          <Link href="/services" className="link link-hover">Services</Link>
-          <Link href="/contact" className="link link-hover">Contact</Link>
-          <Link href="/newsletter" className="link link-hover">Newsletter</Link>
-        </div>
-        <div className="flex-1">
-          <span className="footer-title">Legal</span>
-          <Link href="/legal/termsOfUse" className="link link-hover" target="_blank" rel="noopener noreferrer">
-            Terms of use
-          </Link>
-          <Link href="/legal/privacyPolicy" className="link link-hover" target="_blank" rel="noopener noreferrer">
-            Privacy Policy
-          </Link>
-          <Link href="/legal/cookiePolicy" className="link link-hover" target="_blank" rel="noopener noreferrer">
-            Cookie Policy
-          </Link>
-        </div>
+    <footer className="relative bg-gradient-to-b from-gray-900 to-gray-950 text-white overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-pink-900/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
       </div>
-      <div className="footer container mx-auto mt-10 pt-10 border-t border-primary-content flex flex-col md:flex-row justify-between items-center">
-        <div className="text-left">
-          <p className="mb-1">PO Box 76180, Fort Worth, Texas</p>
-          <p className="mb-1">Email: <a href="mailto:info@ksygroup.com" className="hover:text-primary">info@ksygroup.com</a> | Phone: <a href="tel:+16692437152" className="hover:text-primary">(669) 295-3313</a></p>
-          <p className="text-sm">&copy; 2024 KSY Group LLC. All rights reserved.</p>
+
+      <div className="container mx-auto px-4 pt-16 pb-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h3 className="text-xl font-bold mb-4 text-white/90">KSY Group LLC</h3>
+            <p className="text-white/70 mb-4">
+              Your trusted partner in chemical distribution, providing innovative solutions and quality products to meet your industry needs.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4 text-white/90">Products</h3>
+            <ul className="space-y-2">
+              {productCategories.map((category, index) => (
+                <li key={index}>
+                  <Link 
+                    href={`/product/products?category=${encodeURIComponent(category)}`}
+                    className="text-white/70 hover:text-white transition-colors duration-300"
+                  >
+                    {category}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4 text-white/90">Company</h3>
+            <ul className="space-y-2">
+              {[
+                { name: 'Home', path: '/' },
+                { name: 'About Us', path: '/about' },
+                { name: 'Services', path: '/services' },
+                { name: 'Contact', path: '/contact' },
+                // { name: 'Newsletter', path: '/newsletter' },
+                { name: 'Industry Insights', path: '/industry' }
+              ].map((item, index) => (
+                <li key={index}>
+                  <Link 
+                    href={item.path}
+                    className="text-white/70 hover:text-white transition-colors duration-300"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4 text-white/90">Legal</h3>
+            <ul className="space-y-2">
+              {[
+                { name: 'Terms of Use', path: '/legal/termsOfUse' },
+                { name: 'Privacy Policy', path: '/legal/privacyPolicy' },
+                { name: 'Cookie Policy', path: '/legal/cookiePolicy' }
+              ].map((item, index) => (
+                <li key={index}>
+                  <Link 
+                    href={item.path}
+                    className="text-white/70 hover:text-white transition-colors duration-300"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="flex gap-6 mt-4 md:mt-0">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-600 transition-colors duration-400">
-            <FaFacebookF size={46} />
-          </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors duration-400">
-            <FaTwitter size={46} />
-          </a>
-          <a href="https://www.linkedin.com/company/ksy-group" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-700 transition-colors duration-400">
-            <FaLinkedinIn size={46} />
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-500 transition-colors duration-400">
-            <FaInstagram size={50} />
-          </a>
+
+        <div className="border-t border-white/10 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-white/70">
+              <p className="mb-1">PO Box 76180, Fort Worth, Texas</p>
+              <p className="mb-1">
+                Email: <a href="mailto:info@ksygroup.com" className="hover:text-white transition-colors duration-300">info@ksygroup.com</a> | 
+                Phone: <a href="tel:+16692437152" className="hover:text-white transition-colors duration-300">(669) 295-3313</a>
+              </p>
+              <p className="text-sm">&copy; 2024 KSY Group LLC. All rights reserved.</p>
+            </div>
+
+            <div className="flex gap-4">
+              {[
+                { icon: FaFacebookF, href: 'https://facebook.com', hoverColor: 'hover:text-blue-400' },
+                { icon: FaTwitter, href: 'https://twitter.com', hoverColor: 'hover:text-blue-400' },
+                { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/ksy-group', hoverColor: 'hover:text-blue-400' },
+                { icon: FaInstagram, href: 'https://instagram.com', hoverColor: 'hover:text-pink-400' }
+              ].map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-white/70 ${social.hoverColor} transition-colors duration-300`}
+                >
+                  <social.icon size={24} />
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </footer>
