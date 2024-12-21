@@ -64,13 +64,16 @@ export const ContactForm = () => {
 
       if (insertError) throw insertError;
 
-      const response = await fetch('/api/send', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Failed to send email');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to send email');
+      }
 
       setSubmitMessage('Thank you for your submission. We will contact you soon!');
       setFormData({

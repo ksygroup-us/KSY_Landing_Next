@@ -3,14 +3,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { supabase } from '@/lib/utils/supabaseClient';
+import crypto from 'crypto';
 
-interface NewsletterSignupProps {
-  handleSubscribe: (email: string) => Promise<void>;
-}
-
-const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ handleSubscribe }) => {
+const NewsletterSignup = () => {
   const [email, setEmail] = useState('');
-  const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error' | 'already_subscribed'>('idle');
+  const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error' | 'already_subscribed' | 'verification_sent'>('idle');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,35 +16,62 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ handleSubscribe }) 
     setSubscriptionStatus('idle');
 
     try {
+      // Check for existing subscription
       const { data: existingSubscriptions, error: checkError } = await supabase
         .from('newsletter_subscriptions')
-        .select('email')
+        .select('email, verified')
         .eq('email', email);
 
       if (checkError) throw checkError;
 
       if (existingSubscriptions?.length > 0) {
-        setSubscriptionStatus('already_subscribed');
-        return;
+        // If already verified, show already subscribed message
+        if (existingSubscriptions[0].verified) {
+          setSubscriptionStatus('already_subscribed');
+          return;
+        }
+        // If not verified, allow re-sending verification email
       }
 
-      const { error: insertError } = await supabase
-        .from('newsletter_subscriptions')
-        .insert([{ email }]);
+      // Generate verification token
+      const verificationToken = crypto.randomBytes(32).toString('hex');
 
-      if (insertError) throw insertError;
+      // If no existing subscription, create new one
+      if (!existingSubscriptions?.length) {
+        const { error: insertError } = await supabase
+          .from('newsletter_subscriptions')
+          .insert([
+            { 
+              email,
+              verification_token: verificationToken,
+              verified: false
+            }
+          ]);
 
-      await handleSubscribe(email);
-      
-      const response = await fetch('/api/send-newsletter-welcome', {
+        if (insertError) throw insertError;
+      } else {
+        // Update existing unverified subscription with new token
+        const { error: updateError } = await supabase
+          .from('newsletter_subscriptions')
+          .update({ verification_token: verificationToken })
+          .eq('email', email);
+
+        if (updateError) throw updateError;
+      }
+
+      // Send verification email
+      const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, verificationToken }),
       });
 
-      if (!response.ok) throw new Error('Failed to send welcome email');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to send verification email');
+      }
 
-      setSubscriptionStatus('success');
+      setSubscriptionStatus('verification_sent');
       setEmail('');
     } catch (error) {
       console.error('Error:', error);
@@ -100,12 +124,13 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ handleSubscribe }) 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 className={`p-4 rounded-lg shadow-lg ${
-                  subscriptionStatus === 'success' ? 'bg-green-100 text-green-800' :
+                  subscriptionStatus === 'verification_sent' ? 'bg-blue-100 text-blue-800' :
                   subscriptionStatus === 'error' ? 'bg-red-100 text-red-800' :
-                  'bg-yellow-100 text-yellow-800'
+                  subscriptionStatus === 'already_subscribed' ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-green-100 text-green-800'
                 }`}
               >
-                {subscriptionStatus === 'success' && "Welcome aboard! Check your email for a special welcome package."}
+                {subscriptionStatus === 'verification_sent' && "Please check your email to verify your subscription."}
                 {subscriptionStatus === 'error' && "Oops! Something went wrong. Please try again."}
                 {subscriptionStatus === 'already_subscribed' && "You're already subscribed! We appreciate your enthusiasm."}
               </motion.div>
