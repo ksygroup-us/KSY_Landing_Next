@@ -56,7 +56,7 @@ export default function Footer() {
                 { name: 'Services', path: '/services' },
                 { name: 'Contact', path: '/contact' },
                 // { name: 'Newsletter', path: '/newsletter' },
-                { name: 'Industry Insights', path: '/industry' }
+                // { name: 'Industry Insights', path: '/industry' }
               ].map((item, index) => (
                 <li key={index}>
                   <Link 

@@ -271,7 +271,7 @@ export default function Header() {
               <NavLink href="/about">About</NavLink>
 
               {/* Industry Insights Dropdown */}
-              <div ref={insightsRef} className="relative">
+              {/* <div ref={insightsRef} className="relative">
                 <DropdownButton
                   label="Industry Insights"
                   isOpen={isInsightsOpen}
@@ -284,7 +284,7 @@ export default function Header() {
                     { href: '/industry-insights/summary-reports', label: 'Summary Reports' }
                   ]}
                 />
-              </div>
+              </div> */}
 
               <Button
                 onClick={() => router.push('/contact')}
